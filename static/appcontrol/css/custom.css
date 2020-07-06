@@ -1,0 +1,12 @@
+.animate_login{
+    opacity: 1;
+    top: 0;
+    animation-name: animate_form;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+}
+
+@keyframes animate_form{
+    from{opacity: 0; top: -60px}
+    to{opacity: 1;top: 0;}
+}

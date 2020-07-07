@@ -103,6 +103,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+ADMIN_EMAIL = 'info@ztech.com'
+
+# SMTP DETAILS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_USE_TLS = False
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '6a9938dce2ec0a'
+EMAIL_HOST_PASSWORD = 'ba0ab894eea17b'
+
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

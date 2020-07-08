@@ -1,0 +1,29 @@
+{% include "./head.html" %}
+
+<div id="wrapper">
+    {% include "./sidebar.html" %}
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            {% include "./topHeader.html" %}
+            <!-- Begin Page Content -->
+            <div class="container-fluid">            
+                {% block content %}{% endblock %}
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; {{ app_name }} 2020</span>
+                </div>
+            </div>
+        </footer>
+      <!-- End of Footer -->
+    </div>
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+{% include "./foot.html" %}

@@ -7,7 +7,6 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import random
 import string
-from datetime import date
 
 def index(request):
 
@@ -89,8 +88,7 @@ def forget_password(request):
             forget_password_token = ''.join(random.choice(random_key) for i in range(20))
 
             update_user = models.Users.objects.get(id=user_id)
-            update_user.forget_password_token = forget_password_token
-            update_user.created_at = date.today()
+            update_user.forget_password_token = forget_password_token            
             update_user.save()
 
             email_subject = 'Ztech Forget Password'
@@ -112,11 +110,35 @@ def post_forget_password(request, forget_password_token):
     
     data = {
         'app_name': settings.APP_NAME,
-        'template_folder': 'authentication/forget_password',
+        'template_folder': 'authentication/reset_password',
         'template_file': 'reset_password.html',
         'error': None,
-        'sucess': None,
-        'email': '',
+        'sucess': None,        
+        'user_id': None,
     }
 
-    return HttpResponse(forget_password_token)
+    if request.POST:
+        password = request.POST.get('password')
+        confirm_pass = request.POST.get('confirm_password')
+        user_id = request.POST.get('user_id')
+
+        if password == confirm_pass:
+            update_user = models.Users.objects.get(id=user_id)
+            update_user.password = password
+            update_user.save()
+
+            return redirect('/appcontrol/')
+
+        else:
+            data['error'] = "Password and Confirm Password doesn't matched"
+
+    token_data = models.Users.objects.filter(forget_password_token=forget_password_token).values()
+
+    if token_data.exists():
+        for user_data in token_data:
+            data['user_id'] = user_data['id']
+    
+    else:
+        return redirect('/appcontrol/')
+
+    return render(request, data['template_folder'] + '/' + data['template_file'], data)

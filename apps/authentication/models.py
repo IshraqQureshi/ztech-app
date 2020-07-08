@@ -11,5 +11,3 @@ class Users(models.Model):
     finger_print_id = models.CharField('finger_print_id', max_length=100)
     status = models.BooleanField('status')
     forget_password_token = models.CharField('forget_password_token', max_length=256)
-    created_at = models.DateTimeField('create_at')
-    updated_at = models.DateTimeField('update_at', auto_now=True)        

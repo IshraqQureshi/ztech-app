@@ -5,7 +5,33 @@
     animation-duration: 1s;
     animation-timing-function: linear;
 }
+.collapse_btn {
+    position: absolute;
+    bottom: 30px;
+    right: -20px;
+    background-color: none;
+}
+ul#accordionSidebar {
+    position: relative;
+    transition: 0.5s ease all;
+}
+.sidebar-dark #sidebarToggle::after {
+    color: rgb(48, 83, 200);
+}
+.sidebar-dark.toggled #sidebarToggle::after {
+    color: rgb(44, 82, 197);
+}
+.sidebar-dark #sidebarToggle {
+    background-color: rgba(255,255,255,1);
+    border: 1px solid rgb(44, 82, 197);
+}
+.sidebar-dark #sidebarToggle:hover{
+    background-color: rgb(44, 82, 197);;
+}
 
+.sidebar-dark #sidebarToggle:hover:after{
+    color: #fff
+}
 @keyframes animate_form{
     from{opacity: 0; top: -60px}
     to{opacity: 1;top: 0;}

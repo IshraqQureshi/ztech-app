@@ -1,0 +1,30 @@
+{% extends '../template/template.html' %}
+
+{% block content %}
+  <h1 class="h3 mb-2 text-gray-800 custom-page-heading">Manage User Roles</h1>    
+  <div class="card shadow mb-4">            
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="userRolesData" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Role name</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Role name</th>
+            </tr>
+          </tfoot>
+          <tbody>
+              {% for role in user_roles %}
+                <tr>
+                  <td>{{ role.role_name }}</td>
+                </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>          
+  </div>
+{% endblock %}

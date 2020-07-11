@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     
     'apps.authentication',
     'apps.appcontrol.dashboard',
+    'apps.appcontrol.users',
     'apps.appcontrol.userroles',
     'ztech'
 ]

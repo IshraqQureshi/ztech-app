@@ -12,10 +12,10 @@
     <hr class="sidebar-divider my-0">
     
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
+    <li class="nav-item {% if request.path == '/appcontrol/dashboard' %} active {% endif %}">
         <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
+            <span>Dashboard</span>                        
         </a>
     </li>
 
@@ -54,15 +54,15 @@
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item {% if request.path == '/appcontrol/user-roles/manage' or request.path == '/appcontrol/users/manage' %} active {% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
             <span>Users</span>
         </a>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseThree" class="collapse {% if request.path == '/appcontrol/user-roles/manage' or request.path == '/appcontrol/users/manage' %} show {% endif %}" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">                        
-                <a class="collapse-item" href="#">Manage Users</a>
-                <a class="collapse-item" href="{% url 'manage_user_roles' %}">Manage Roles</a>                
+                <a class="collapse-item {% if request.path == '/appcontrol/users/manage' %} active {% endif %}" href="{% url 'manage_users' %}">Manage Users</a>
+                <a class="collapse-item {% if request.path == '/appcontrol/user-roles/manage' %} active {% endif %}" href="{% url 'manage_user_roles' %}">Manage Roles</a>                
             </div>
         </div>
     </li>
@@ -76,7 +76,7 @@
     </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link" href="#" aria-expanded="true">
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <span>Daily Attendance</span>

@@ -9,7 +9,8 @@
                 <label for="first_name" class="font-weight-bold">First Name <span class="text-danger">*</span></label>
             </div>
             <div class="col-lg-4">
-                <input type="text" class="form-control" placeholder="Enter First Name" name="first_name">
+                <input type="text" class="form-control" placeholder="Enter First Name" name="first_name">                
+                <p class="text-danger">{{ errors.first_name }}</p>
             </div>
         </div>
 
@@ -18,7 +19,8 @@
                 <label for="last_name" class="font-weight-bold">Last Name <span class="text-danger">*</span></label>
             </div>
             <div class="col-lg-4">
-                <input type="text" class="form-control" placeholder="Enter Last Name" name="last_name">
+                <input type="text" class="form-control" placeholder="Enter Last Name" name="last_name">                
+                <p class="text-danger">{{ errors.last_name }}</p>
             </div>
         </div>
 
@@ -28,6 +30,7 @@
             </div>
             <div class="col-lg-4">
                 <input type="email" class="form-control" placeholder="Enter Email" name="email">
+                <p class="text-danger">{{ errors.email }}</p>                
             </div>
         </div>
 
@@ -37,6 +40,7 @@
             </div>
             <div class="col-lg-4">
                 <input type="text" class="form-control" placeholder="Enter Phone Number" name="phone_num">
+                <p class="text-danger">{{ errors.phone_num }}</p>
             </div>
         </div>
 
@@ -46,6 +50,7 @@
             </div>
             <div class="col-lg-4">
                 <input type="text" class="form-control" placeholder="Enter User Name" name="user_name">
+                <p class="text-danger">{{ errors.user_name }}</p>                
             </div>
         </div>
 
@@ -57,7 +62,7 @@
                 <select class="form-control" name="status">
                     <option value="1">Active</option>
                     <option value="0">In-Active</option>
-                </select>
+                </select>                
             </div>
         </div>
 

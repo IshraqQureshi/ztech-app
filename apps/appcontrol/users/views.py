@@ -32,7 +32,9 @@ def add(request):
         'page_name': 'Manage User Roles',
         'template_folder': 'appcontrol/users',
         'template_file': 'add.html',
-        'admin_name': user_data['first_name'] + ' ' + user_data['last_name']
+        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'errors': {},
+        'user_data': {},
     }
 
     data['form'] = UserForm(None)
@@ -40,5 +42,14 @@ def add(request):
     if request.POST:
         
         user_data = UserForm(request.POST)        
+
+        data['errors'] = user_data.validate()
+
+        if data['errors']:
+            data['user_data'] = request.POST
+        else:
+            pass
+    
+    
 
     return render(request, data['template_folder'] + '/' + data['template_file'], data)

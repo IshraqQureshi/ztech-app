@@ -1,30 +1,51 @@
 from django.forms import ModelForm
 from django import forms
 from apps.authentication.models import Users
+import re
 
-class UserForm(ModelForm):
-    class Meta:
-        model = Users
-
-        fields = ['first_name', 'last_name', 'email', 'phone_num', 'user_name', 'status']
-    
-    def clean(self):
-
-        super(UserForm, self).clean()
-
-        first_name = self.cleaned_data.get('first_name')
-        last_name = self.cleaned_data.get('last_name')
-        email = self.cleaned_data.get('email')
-        phone_num = self.cleaned_data.get('phone_num')
-        user_name = self.cleaned_data.get('user_name')
-
-        custom_errors = {}
-
-        print(first_name)
+class UserForm(): 
+    def __init__(self, form_data):
         
-        if len(first_name) < 5:
-            custom_errors['first_name'] = 'Minimum 5 characters are required'
+        if form_data is not None:
+            
+            self.error = {}
+            self.first_name = form_data.get('first_name')
+            self.last_name = form_data.get('last_name')
+            self.email = form_data.get('email')
+            self.phone_num = form_data.get('phone_num')
+            self.user_name = form_data.get('user_name')
+            self.status = form_data.get('status')
+            
+    def validate(self):
         
+        if self.first_name == '':
+            self.error['first_name'] = 'First Name is requird'                        
+            
+        if self.last_name == '':
+            self.error['last_name'] = 'Last Name is requird'
+
+        if self.email == '':
+            self.error['email'] = 'Email is requird'
+            
+        if self.phone_num == '':
+            self.error['phone_num'] = 'Phone is requird'
+
+        if self.user_name == '':
+            self.error['user_name'] = 'User Name is requird'
+
+        if self.nameValidation(self.first_name):
+                self.error['first_name'] = 'Only alphabets are required'
+
+        if self.nameValidation(self.last_name):
+                self.error['last_name'] = 'Only alphabets are required'
+            
+        return self.error
+
+    def nameValidation(self, name):
         
-        print(custom_errors)
-        return custom_errors
+        prog = re.match(r"^[a-zA-Z]+$", name)        
+
+        if prog:
+            return False
+        
+        return True

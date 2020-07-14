@@ -49,7 +49,7 @@ def check_login(request, username, password):
     }
 
     for user in users.values():
-        print(username == user['user_name'] and password == user['password'])
+        print(user['password'])
         if username == user['user_name'] and password == user['password']:
             login['status'] = True
             login['user'] = user

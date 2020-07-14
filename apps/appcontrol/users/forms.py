@@ -19,33 +19,83 @@ class UserForm():
     def validate(self):
         
         if self.first_name == '':
-            self.error['first_name'] = 'First Name is requird'                        
+            self.error['first_name'] = 'First Name is requird'
+        
+        elif self.nameValidation(self.first_name):
+            self.error['first_name'] = 'Only alphabets are required'
             
         if self.last_name == '':
             self.error['last_name'] = 'Last Name is requird'
+        
+        elif self.nameValidation(self.last_name):
+                self.error['last_name'] = 'Only alphabets are required'
 
         if self.email == '':
             self.error['email'] = 'Email is requird'
+        
+        elif self.emailVaidation(self.email):
+            self.error['email'] = 'Email is not valid'
+        
+        elif self.uniqueUserEmail(self.email):
+            self.error['email'] = 'Email is already taken'
             
         if self.phone_num == '':
             self.error['phone_num'] = 'Phone is requird'
 
+        elif self.numberValidation(self.phone_num):
+            self.error['phone_num'] = 'Only numbers are required'
+
         if self.user_name == '':
-            self.error['user_name'] = 'User Name is requird'
+            self.error['user_name'] = 'User Name is requird'                
 
-        if self.nameValidation(self.first_name):
-                self.error['first_name'] = 'Only alphabets are required'
-
-        if self.nameValidation(self.last_name):
-                self.error['last_name'] = 'Only alphabets are required'
+        elif self.uniqueUserName(self.user_name):
+            self.error['user_name'] = 'User Name is already taken'
             
         return self.error
 
-    def nameValidation(self, name):
+    def nameValidation(self, value):
         
-        prog = re.match(r"^[a-zA-Z]+$", name)        
+        data = re.match(r"^[a-zA-Z]+$", value)        
 
-        if prog:
+        if data:
             return False
         
         return True
+    
+    def emailVaidation(self, value):
+
+        data = re.match(r"^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$", value)
+
+        if data:
+            return False
+        
+        return True
+    
+    def numberValidation(self, value):
+        
+        data = re.match(r"^[0-9]+$", value)        
+
+        if data:
+            return False
+        
+        return True
+    
+    def uniqueUserName(self, value):
+
+        check_user = Users.objects.filter(user_name=value).values()        
+
+        if check_user.exists():
+            return True
+        
+        return False
+
+    def uniqueUserEmail(self, value):
+
+        check_user = Users.objects.filter(email=value).values()
+
+        print(check_user)
+
+        if check_user.exists():
+            return True
+        
+        return False

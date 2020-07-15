@@ -16,8 +16,10 @@ class UserForm():
             self.user_name = form_data.get('user_name')
             self.status = form_data.get('status')
             
-    def validate(self):
+    def validate(self, edit= False):
         
+        print(edit)
+
         if self.first_name == '':
             self.error['first_name'] = 'First Name is requird'
         
@@ -36,7 +38,7 @@ class UserForm():
         elif self.emailVaidation(self.email):
             self.error['email'] = 'Email is not valid'
         
-        elif self.uniqueUserEmail(self.email):
+        elif self.uniqueUserEmail(self.email) and edit == False:
             self.error['email'] = 'Email is already taken'
             
         if self.phone_num == '':
@@ -48,7 +50,7 @@ class UserForm():
         if self.user_name == '':
             self.error['user_name'] = 'User Name is requird'                
 
-        elif self.uniqueUserName(self.user_name):
+        elif self.uniqueUserName(self.user_name) and edit == False:
             self.error['user_name'] = 'User Name is already taken'
             
         return self.error
@@ -91,9 +93,7 @@ class UserForm():
 
     def uniqueUserEmail(self, value):
 
-        check_user = Users.objects.filter(email=value).values()
-
-        print(check_user)
+        check_user = Users.objects.filter(email=value).values()        
 
         if check_user.exists():
             return True

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from apps.authentication.models import Users
+from apps.appcontrol.userroles.models import UserRoles
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -13,17 +14,18 @@ def index(request):
     if request.session.get('user') is None:
         return redirect('/appcontrol/')
     
-    user_data = request.session.get('user')
+    user_data = request.session.get('user')    
     
     data = {
         'app_name': settings.APP_NAME,
         'page_name': 'Manage User Roles',
         'template_folder': 'appcontrol/users',
         'template_file': 'manage.html',
-        'admin_name': user_data['first_name'] + ' ' + user_data['last_name']
+        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],        
     }
 
-    data['users'] = Users.objects.filter(status=1).values()    
+    data['users'] = Users.objects.filter(status=1).values()
+    data['user_roles'] = UserRoles.objects.all().values()
             
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
 
@@ -32,6 +34,8 @@ def add(request):
         return redirect('/appcontrol/')
     
     user_data = request.session.get('user')
+
+    user_roles = UserRoles.objects.all().values()
     
     data = {
         'app_name': settings.APP_NAME,
@@ -42,6 +46,7 @@ def add(request):
         'errors': {},
         'user_data': {},
         'success': None,
+        'user_roles': user_roles
     }
 
     data['form'] = UserForm(None)
@@ -77,6 +82,7 @@ def add(request):
             save_user.phone_num = request.POST.get('phone_num')
             save_user.user_name = request.POST.get('user_name')
             save_user.password = rand_password
+            save_user.user_role_id = request.POST.get('user_role_id')
             save_user.status = request.POST.get('status')
 
             save_user.save()            
@@ -88,6 +94,57 @@ def add(request):
     
 
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
+
+def edit(request, user_id):
+    if request.session.get('user') is None:
+        return redirect('/appcontrol/')
+    
+    user_data = request.session.get('user')
+
+    user = Users.objects.filter(id=user_id).values()
+    user_roles = UserRoles.objects.all().values()
+    
+    data = {
+        'app_name': settings.APP_NAME,
+        'page_name': 'Manage User Roles',
+        'template_folder': 'appcontrol/users',
+        'template_file': 'edit.html',
+        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'errors': {},
+        'user_data': user[0],
+        'user_roles': user_roles,
+        'success': None,
+    }
+
+    data['form'] = UserForm(None)
+
+    if request.POST:
+        
+        user_data = UserForm(request.POST)        
+
+        data['errors'] = user_data.validate(edit=True)
+
+        if data['errors']:
+            pass
+        else:            
+
+            save_user = Users.objects.get(id=user_id)
+            save_user.first_name = request.POST.get('first_name')
+            save_user.last_name = request.POST.get('last_name')
+            save_user.email = request.POST.get('email')
+            save_user.phone_num = request.POST.get('phone_num')
+            save_user.user_name = request.POST.get('user_name')
+            save_user.user_role_id = request.POST.get('user_role_id')
+            save_user.status = request.POST.get('status')
+
+            save_user.save()                        
+
+            data['success'] = 'User Update Successfully'
+
+            return redirect('/appcontrol/users/manage')
+
+    return render(request, data['template_folder'] + '/' + data['template_file'], data)
+
 
 def delete(request, user_id):
     

@@ -33,10 +33,14 @@
                     <td>{{ user.first_name }}</td>
                     <td>{{ user.last_name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>Super Admin</td>
-                    <td>
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="{% url 'delete_user' user_id=user.id %}" class="btn btn-danger">Delete</a>
+                    {% for role in user_roles %}
+                      {% if role.id == user.user_role_id %}
+                        <td>{{role.role_name}}</td>
+                      {% endif %}
+                    {% endfor %}
+                    <td>                      
+                        <a href="{% url 'edit_user' user_id=user.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'delete_user' user_id=user.id %}" class="btn btn-danger">Delete</a>                      
                     </td>
                 </tr>
               {% endfor %}

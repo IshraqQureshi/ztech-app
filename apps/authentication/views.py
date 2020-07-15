@@ -60,7 +60,7 @@ def check_login(request, username, password):
 
 def logout(request):
     request.session['user'] = None
-    return HttpResponse('Session is Removed, You Are Logout')
+    return redirect('/appcontrol/')
 
 def forget_password(request):
     

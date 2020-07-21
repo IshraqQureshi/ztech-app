@@ -39,9 +39,9 @@ def add(request):
     
     data = {
         'app_name': settings.APP_NAME,
-        'page_name': 'Manage User Roles',
+        'page_name': 'Add User',
         'template_folder': 'appcontrol/users',
-        'template_file': 'add.html',
+        'template_file': 'edit.html',
         'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
         'errors': {},
         'user_data': {},
@@ -52,7 +52,7 @@ def add(request):
     data['form'] = UserForm(None)
 
     if request.POST:
-        
+        print('testing', request.POST)
         user_data = UserForm(request.POST)        
 
         data['errors'] = user_data.validate()
@@ -75,17 +75,7 @@ def add(request):
             from_email = settings.ADMIN_EMAIL
             to = request.POST.get('email')
 
-            save_user = Users()
-            save_user.first_name = request.POST.get('first_name')
-            save_user.last_name = request.POST.get('last_name')
-            save_user.email = request.POST.get('email')
-            save_user.phone_num = request.POST.get('phone_num')
-            save_user.user_name = request.POST.get('user_name')
-            save_user.password = rand_password
-            save_user.user_role_id = request.POST.get('user_role_id')
-            save_user.status = request.POST.get('status')
-
-            save_user.save()            
+            save(request, password=rand_password)            
 
             send_mail(email_subject, plain_message, from_email, [to], html_message=html_message)
 
@@ -106,7 +96,7 @@ def edit(request, user_id):
     
     data = {
         'app_name': settings.APP_NAME,
-        'page_name': 'Manage User Roles',
+        'page_name': 'Edit User',
         'template_folder': 'appcontrol/users',
         'template_file': 'edit.html',
         'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
@@ -128,25 +118,33 @@ def edit(request, user_id):
             pass
         else:            
 
-            save_user = Users.objects.get(id=user_id)
-            save_user.first_name = request.POST.get('first_name')
-            save_user.last_name = request.POST.get('last_name')
-            save_user.email = request.POST.get('email')
-            save_user.phone_num = request.POST.get('phone_num')
-            save_user.user_name = request.POST.get('user_name')
-            save_user.user_role_id = request.POST.get('user_role_id')
-            save_user.status = request.POST.get('status')
+            save(request, user_id=user_id)                            
 
-            save_user.save()                        
-
-            data['success'] = 'User Update Successfully'
-
-            return redirect('/appcontrol/users/manage')
+            data['success'] = 'User Update Successfully'            
 
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
 
+def save(request, user_id= None, password= None):
+    
+    save_user = Users()
 
-def delete(request, user_id):
+    if user_id is not None:
+        save_user = Users.objects.get(id=user_id)
+
+    save_user.first_name = request.POST.get('first_name')
+    save_user.last_name = request.POST.get('last_name')
+    save_user.email = request.POST.get('email')
+    save_user.phone_num = request.POST.get('phone_num')
+    save_user.user_name = request.POST.get('user_name')
+    save_user.user_role_id = request.POST.get('user_role_id')
+    save_user.status = request.POST.get('status')
+
+    if password is not None:
+        save_user.password = password
+
+    save_user.save()            
+
+def delete(request, user_id): 
     
     user_data = Users.objects.filter(id=user_id)
 

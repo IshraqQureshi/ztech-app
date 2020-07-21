@@ -15,6 +15,7 @@ class UserForm():
             self.phone_num = form_data.get('phone_num')
             self.user_name = form_data.get('user_name')
             self.status = form_data.get('status')
+            self.user_image = form_data.get('user_image')
             
     def validate(self, edit= False):
         
@@ -52,7 +53,13 @@ class UserForm():
 
         elif self.uniqueUserName(self.user_name) and edit == False:
             self.error['user_name'] = 'User Name is already taken'
-            
+
+        if self.user_image == '':
+            self.error['user_image'] = 'User Image is required'
+        
+        elif self.imageValidate(self.user_image):
+            self.error['user_image'] = 'User image must be jpeg, jpg, png format'
+
         return self.error
 
     def nameValidation(self, value):
@@ -99,3 +106,7 @@ class UserForm():
             return True
         
         return False
+
+    def imageValidate(self, image):
+
+        print('User Image', image)

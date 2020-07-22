@@ -7,8 +7,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.http import HttpResponse
 from .forms import UserForm
+from django.core.files.storage import FileSystemStorage
 import random
 import string
+import os
 
 def index(request):
     if request.session.get('user') is None:
@@ -46,19 +48,23 @@ def add(request):
         'errors': {},
         'user_data': {},
         'success': None,
-        'user_roles': user_roles
+        'user_roles': user_roles,        
     }
 
     data['form'] = UserForm(None)
 
-    if request.POST:
-        print('testing', request.POST)
+    if request.POST:        
+
         user_data = UserForm(request.POST)        
 
         data['errors'] = user_data.validate()
 
         if data['errors']:
             data['user_data'] = request.POST
+            
+            if 'user_images_dir' in request.FILES:
+                data['user_image'] = request.FILES['user_images_dir']
+
         else:
 
             random_key = string.ascii_lowercase
@@ -74,8 +80,15 @@ def add(request):
             plain_message = strip_tags(html_message) 
             from_email = settings.ADMIN_EMAIL
             to = request.POST.get('email')
+            
+            user_image = request.FILES['user_images_dir']
+        
+            user_image_dir = 'media/users/' + request.POST['user_name']
+            fileSystem = FileSystemStorage(location=user_image_dir)
+            filename = fileSystem.save(user_image.name, user_image)
+            uploaded_file_url = user_image_dir + '/' + filename
 
-            save(request, password=rand_password)            
+            save(request, password=rand_password, user_image=uploaded_file_url)            
 
             send_mail(email_subject, plain_message, from_email, [to], html_message=html_message)
 
@@ -90,6 +103,8 @@ def edit(request, user_id):
         return redirect('/appcontrol/')
     
     user_data = request.session.get('user')
+
+    user_data['file_user_image'] = user_data['user_images_dir']
 
     user = Users.objects.filter(id=user_id).values()
     user_roles = UserRoles.objects.all().values()
@@ -115,16 +130,27 @@ def edit(request, user_id):
         data['errors'] = user_data.validate(edit=True)
 
         if data['errors']:
-            pass
+            if 'user_images_dir' in request.FILES:
+                data['user_image'] = request.FILES['user_images_dir']
         else:            
 
-            save(request, user_id=user_id)                            
+            uploaded_file_url = None
+
+            if 'user_images_dir' in request.FILES:
+                user_image = request.FILES['user_images_dir']
+        
+                user_image_dir = 'media/users/' + request.POST['user_name']
+                fileSystem = FileSystemStorage(location=user_image_dir)
+                filename = fileSystem.save(user_image.name, user_image)
+                uploaded_file_url = user_image_dir + '/' + filename
+
+            save(request, user_id=user_id, user_image=uploaded_file_url)                            
 
             data['success'] = 'User Update Successfully'            
 
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
 
-def save(request, user_id= None, password= None):
+def save(request, user_id= None, password= None, user_image= None):
     
     save_user = Users()
 
@@ -141,6 +167,9 @@ def save(request, user_id= None, password= None):
 
     if password is not None:
         save_user.password = password
+    
+    if user_image is not None:
+        save_user.user_images_dir = user_image
 
     save_user.save()            
 

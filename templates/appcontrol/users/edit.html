@@ -5,7 +5,7 @@
     {% if success is not None %}
         <p class="text-success">{{ success }}</p>
     {% endif %}
-    <form  action="" method="post" class="mt-4" novalidate>
+    <form  action="" method="post" class="mt-4" novalidate enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group row">
             <div class="col-lg-3">
@@ -73,12 +73,14 @@
 
         <div class="form-group row">
             <div class="col-lg-3">
-                <label for="user_name" class="font-weight-bold">User Image <span class="text-danger">*</span></label>
+                <label for="user_image" class="font-weight-bold">User Image <span class="text-danger">*</span></label>
             </div>
             <div class="col-lg-4">
-                <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput" name="user_image">
-                <label class="custom-file-label" for="myInput">Choose file</label>
-                <p class="text-danger">{{ errors.user_name }}</p>
+                <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput" name="user_images_dir" value="{{ user_image }}">
+                <label class="custom-file-label" for="myInput">{% if user_data.file_user_image  %}{{ user_data.file_user_image }}{% else %}Choose file{% endif %}</label>
+                <input type="hidden" name="file_user_image" value="{{ user_data.file_user_image }}">                
+                <a href="/{{ user_data.user_images_dir }}">{{ user_data.user_images_dir }}</a>
+                <p class="text-danger">{{ errors.user_images_dir }}</p>
             </div>
         </div>
 

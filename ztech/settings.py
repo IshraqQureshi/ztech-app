@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'apps.appcontrol.dashboard',
     'apps.appcontrol.users',
     'apps.appcontrol.userroles',
-    'ztech'
+    'ztech',    
 ]
 
 MIDDLEWARE = [
@@ -135,4 +135,4 @@ FRONTEND_STATIC_ROOT = os.path.join(BASE_DIR, '/static/frontend/')
 
 # Media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -12,4 +12,6 @@ document.querySelector('.custom-file-input').addEventListener('change',function(
     var fileName = document.getElementById("myInput").files[0].name;
     var nextSibling = e.target.nextElementSibling
     nextSibling.innerText = fileName
+
+    $("input[name^='file_']").val(fileName);
 })

@@ -5,6 +5,7 @@ def static_root(request):
         'GENERAL_STATIC_ROOT': settings.GENERAL_STATIC_ROOT,
         'APPCONTROL_STATIC_ROOT': settings.APPCONTROL_STATIC_ROOT,
         'FRONTEND_STATIC_ROOT': settings.FRONTEND_STATIC_ROOT,
+        'MEDIA_ROOT': settings.MEDIA_URL,
     }
 
 def settings_constants(request):

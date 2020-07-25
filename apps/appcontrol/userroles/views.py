@@ -13,7 +13,8 @@ def index(request):
         'page_name': 'Manage User Roles',
         'template_folder': 'appcontrol/userroles',
         'template_file': 'manage.html',
-        'admin_name': user_data['first_name'] + ' ' + user_data['last_name']
+        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'admin_image': user_data['user_images_dir'],
     }
 
     data['user_roles'] = models.UserRoles.objects.all().values()    

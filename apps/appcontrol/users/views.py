@@ -23,7 +23,8 @@ def index(request):
         'page_name': 'Manage User Roles',
         'template_folder': 'appcontrol/users',
         'template_file': 'manage.html',
-        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],        
+        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'admin_image': user_data['user_images_dir'],
     }
 
     data['users'] = Users.objects.filter(status=1).values()
@@ -45,6 +46,7 @@ def add(request):
         'template_folder': 'appcontrol/users',
         'template_file': 'edit.html',
         'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'admin_image': user_data['user_images_dir'],
         'errors': {},
         'user_data': {},
         'success': None,
@@ -115,6 +117,7 @@ def edit(request, user_id):
         'template_folder': 'appcontrol/users',
         'template_file': 'edit.html',
         'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'admin_image': user_data['user_images_dir'],
         'errors': {},
         'user_data': user[0],
         'user_roles': user_roles,

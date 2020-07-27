@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'apps.appcontrol.dashboard',
     'apps.appcontrol.users',
     'apps.appcontrol.userroles',
+    'apps.appcontrol.user_profile',
     'ztech',    
 ]
 
@@ -39,7 +40,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'ztech.middleware.UserRoleAuthentication',
+    # 'ztech.middleware.UserRoleAuthentication',
 ]
 
 ROOT_URLCONF = 'ztech.urls'

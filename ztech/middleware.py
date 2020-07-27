@@ -8,25 +8,32 @@ class UserRoleAuthentication:
 
     def __call__(self, request, args_id= False):
         
-        response = self.get_response(request)
-        user = request.session.get('user')
+        if request.session.get('user') is not None:
+            
+            response = self.get_response(request)
+            user = request.session.get('user')
 
-        user_role_id = user['user_role_id']
-        request_url = request.path
+            user_role_id = user['user_role_id']
+            request_url = request.path
 
-        authenticate_urls = self.authenticate_url(user_role_id)
-        print(args_id)
-        print(authenticate_urls)
+            authenticate_urls = self.authenticate_url(user_role_id) 
 
-        if request_url in authenticate_urls:
-            return response
-        
+            print(request_url)
+
+            if request_url == '/appconrol/':
+                return response
+
+            if request_url in authenticate_urls:
+                return response
+            
+            else:            
+                return redirect('appcontrol/dashboard')
         else:
-            print('fails')
-            return redirect('appcontrol/dashboard')
+            return response
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         self.user_id = view_kwargs.get('user_id')
+
 
     def authenticate_url(self, role_id):
 
@@ -40,6 +47,7 @@ class UserRoleAuthentication:
                 '/appcontrol/users/edit/'+str(self.user_id),
                 '/appcontrol/users/delete/'+str(self.user_id),                
                 '/appcontrol/user-roles/',
+                '/appcontrol/myprofile/',
             ]
 
         elif role_id == 2:

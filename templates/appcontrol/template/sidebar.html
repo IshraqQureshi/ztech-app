@@ -35,7 +35,7 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">            
-                <a class="collapse-item" href="#">Manage Employees</a>                
+                <a class="collapse-item {% if request.path == '/appcontrol/employees/manage' %} active {% endif %}" href="{% url 'manage_employee' %}">Manage Employees</a>                
             </div>
         </div>
     </li>

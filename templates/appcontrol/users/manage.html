@@ -1,7 +1,7 @@
 {% extends '../template/template.html' %}
 
 {% block content %}
-  <h1 class="h3 mb-2 text-gray-800 custom-page-heading">Manage Users</h1>    
+  <h1 class="h3 mb-2 text-gray-800 custom-page-heading">{{ page_name }}</h1>    
   <div class="add_btn mb-3">
     <a href="{% url 'add_user' %}" class="btn btn-warning">Add User</a>
   </div>

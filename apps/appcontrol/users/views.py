@@ -20,7 +20,7 @@ def index(request):
     
     data = {
         'app_name': settings.APP_NAME,
-        'page_name': 'Manage User Roles',
+        'page_name': 'Manage Users',
         'template_folder': 'appcontrol/users',
         'template_file': 'manage.html',
         'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],

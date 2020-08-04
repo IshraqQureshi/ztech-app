@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from . import models
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     if request.session.get('user') is None:
@@ -20,3 +22,25 @@ def index(request):
     data['employees'] = models.Employees.objects.filter(status=1).values()
             
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
+
+def add (request):
+    if request.session.get('user') is None:
+        return redirect('/appcontrol/')
+    
+    user_data = request.session.get('user')    
+    
+    data = {
+        'app_name': settings.APP_NAME,
+        'page_name': 'Add Employees',
+        'template_folder': 'appcontrol/employees',
+        'template_file': 'edit.html',
+        'admin_name': user_data['first_name'] + ' ' + user_data['last_name'],
+        'admin_image': user_data['user_images_dir'],
+    }    
+            
+    return render(request, data['template_folder'] + '/' + data['template_file'], data)
+
+@csrf_exempt
+def ajax_fingerprint(request):
+    response = {}
+    return JsonResponse(response)

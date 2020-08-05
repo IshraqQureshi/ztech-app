@@ -13,6 +13,8 @@
             </div>
             <div class="col-lg-4">
                 <button class="btn btn-primary" id="fingerprint_btn_1" data-fingerprint="1">Register Finger Print</button>
+                <input type="hidden" name="fingerprint_1" value="">
+                <p class="fingerprint_success" style="display:none">Fingerprint Added</p>
                 <p class="text-danger">{{ errors.first_name }}</p>
             </div>
         </div>
@@ -23,6 +25,17 @@
                 <a href="{% url 'manage_users' %}" class="btn btn-danger">Back</a>
             </div>
         </div>
-  
     </form>
+    <div class="finger_print_popup app_popup">
+        <h4>Place Your Finger On Sensor</h4>
+        <div class="fingerprint_image">
+            <img src="{{ APPCONTROL_STATIC_ROOT }}images/fingerprint.gif" alt="Fingerprint">
+        </div>
+    </div>
+    <div class="finger_print_success app_popup">
+        <h4>Fingerprint Successfully Added!!</h4>
+        <div class="fingerprint_image">
+            <img src="{{ APPCONTROL_STATIC_ROOT }}images/checkbox.gif" alt="Fingerprint">
+        </div>
+    </div>
 {% endblock %}

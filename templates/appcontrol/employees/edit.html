@@ -9,13 +9,120 @@
         {% csrf_token %}
         <div class="form-group row">
             <div class="col-lg-3">
+                <label for="first_name" class="font-weight-bold">First Name <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Enter First Name" name="first_name" value="{{ employee_data.first_name }}">
+                <p class="text-danger">{{ errors.first_name }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="last_name" class="font-weight-bold">Last Name <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Enter Last Name" name="last_name" value="{{ employee_data.last_name }}">                
+                <p class="text-danger">{{ errors.last_name }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="email" class="font-weight-bold">Email <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="email" class="form-control" placeholder="Enter Email" name="email" value="{{ employee_data.email }}">
+                <p class="text-danger">{{ errors.email }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="nic_number" class="font-weight-bold">NIC Number <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Enter NIC Number" name="nic_number" value="{{ employee_data.nic_number }}">                
+                <p class="text-danger">{{ errors.nic_number }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="phone_number" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Enter Phone Number" name="phone_number" value="{{ employee_data.phone_number }}">
+                <p class="text-danger">{{ errors.phone_number }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="address" class="font-weight-bold">Address <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">                
+                <textarea class="form-control" placeholder="Enter Address" name="address" >{{ employee_data.address }}</textarea>
+                <p class="text-danger">{{ errors.address }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="designation" class="font-weight-bold">Designation <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Enter Designation" name="designation" value="{{ employee_data.designation }}">
+                <p class="text-danger">{{ errors.designation }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="department_id" class="font-weight-bold">Department <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">            
+                {% comment %} <input type="text" class="form-control" placeholder="Enter Department" name="department_id" value="{{ user_data.department_id }}"> {% endcomment %}
+                <select class="form-control" name="department_id">
+                    <option value="">Select Department</option>
+                    <option value="1" {% if employee_data.department_id == 1 %}selected{% endif %}>IT Department</option>
+                    <option value="2" {% if employee_data.department_id == 2 %}selected{% endif %}>HR Department</option>
+                    <option value="3" {% if employee_data.department_id == 3 %}selected{% endif %}>Admin Department</option>
+                </select>
+                <p class="text-danger">{{ errors.department_id }}</p>
+            </div>            
+        </div>
+        {% comment %} <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="image_dir" class="font-weight-bold">Employee Images <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput" name="employee_images_dir" value="{{ employee_image }}">
+                <label class="custom-file-label" for="myInput">{% if user_data.file_employee_image  %}{{ user_data.file_employee_image }}{% else %}Choose file{% endif %}</label>
+                <input type="hidden" name="file_employee_image" value="{{ user_data.file_employee_image }}">                
+                <a href="/{{ user_data.user_images_dir }}">{{ user_data.employee_images_dir }}</a>
+                <p class="text-danger">{{ errors.employee_images_dir }}</p>
+            </div>
+        </div> {% endcomment %}
+        <div class="form-group row">
+            <div class="col-lg-3">
                 <label for="first_name" class="font-weight-bold">FingerPrint <span class="text-danger">*</span></label>
             </div>
             <div class="col-lg-4">
                 <button class="btn btn-primary" id="fingerprint_btn_1" data-fingerprint="1">Register Finger Print</button>
-                <input type="hidden" name="fingerprint_1" value="">
-                <p class="fingerprint_success" style="display:none">Fingerprint Added</p>
-                <p class="text-danger">{{ errors.first_name }}</p>
+                <input type="hidden" name="fingerprint_1" value="{{employee_data.fingerprint_1}}">                
+                {% if employee_data.fingerprint_1  %}
+                    <p class="fingerprint_success">Fingerprint Added</p>
+                {% else %}
+                    <p class="fingerprint_success" style="display:none">Fingerprint Not Added</p>
+                {% endif %}
+                
+                <p class="text-danger">{{ errors.fingerprint_1 }}</p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="status" class="font-weight-bold">Status</label>
+            </div>
+            <div class="col-lg-4">                
+                <select class="form-control" name="status">
+                    <option value="1" {% if employee_data.status == 1|slugify %}selected{% endif %}>Active</option>
+                    <option value="0" {% if employee_data.status == 0|slugify %}selected{% endif %}>In-Active</option>
+                </select>                
+                <p class="text-danger">{{ errors.status }}</p>
             </div>
         </div>
 

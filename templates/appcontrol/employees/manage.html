@@ -35,8 +35,8 @@
                     <td>{{ employee.email }}</td>
                     <td>{{ employee.designation }}</td>
                     <td>                      
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>                      
+                        <a href="{% url 'edit_employee' employee_id=employee.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'delete_employee' employee_id=employee.id %}" class="btn btn-danger">Delete</a>                      
                     </td>
                 </tr>
               {% endfor %}

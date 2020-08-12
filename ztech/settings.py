@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'apps.appcontrol.userroles',
     'apps.appcontrol.user_profile',
     'apps.appcontrol.employees',
+
+    'apps.frontend.fingerVerification',
     'ztech',    
 ]
 

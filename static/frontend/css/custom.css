@@ -1,0 +1,106 @@
+/* COLOR VARIABLES */
+:root{
+    --red-color: red;
+    --white-color: white;
+    --blue-color: blue;
+    --green-color: green;
+    --black-color: black;
+    --purple-color: purple;
+    --yellow-color: yellow;
+    --orange-color: orange;
+    --grey-color: grey;
+    --light-grey-color: lightgrey;
+    --light-blue-color: lightblue;
+    --pink-color: pink;
+    --brown-color: brown;
+
+}
+
+/* GENERAL STYLES */
+body{margin: 0;padding: 0;font-size: 16px;font-family: 'Nunito';}
+*{box-sizing: border-box;}
+
+/* CONTAINER */
+.container{max-width: 1280px;margin: auto;}
+
+/* WIDTH CLASSES */
+.w-100{width: 100%}
+.w-75{width: 75%}
+.w-50{width: 50%}
+.w-33{width: 33%}
+.w-25{width: 25%}
+
+.vw-100{width: 100vw}
+.vw-75{width: 75vw}
+.vw-50{width: 50vw}
+.vw-25{width: 25vw}
+
+/* HEIGHT CLASSES */
+.vh-100{height: 100vh}
+.vh-75{height: 75vh}
+.vh-50{height: 50vh}
+.vh-25{height: 25vh}
+
+/* MARGIN CLASSES*/
+.mr-10{margin-right: 10px}
+.mr-20{margin-right: 20px}
+.mt-10{margin-top: 10px}
+.mt-20{margin-top: 20px}
+.mb-10{margin-bottom: 10px}
+.mb-10{margin-bottom: 20px}
+.ml-10{margin-left: 10px}
+.ml-20{margin-left: 20px}
+.m-10{margin: 10px}
+.m-20{margin: 20px}
+.m-auto{margin: auto}
+
+/* PADDING CLASSES */
+.pr-10{padding-right: 10px}
+.pr-20{padding-right: 20px}
+.pt-10{padding-top: 10px}
+.pt-20{padding-top: 20px}
+.pb-10{padding-bottom: 10px}
+.pb-10{padding-bottom: 20px}
+.pl-10{padding-left: 10px}
+.pl-20{padding-left: 20px}
+.p-10{padding: 10px}
+.p-20{padding: 20px}
+
+/* FONT SIZE CLASSES */
+.font-1{font-size: 1em}
+.font-1_2{font-size: 1.2em}
+.font-1_4{font-size: 1.4em}
+.font-1_6{font-size: 1.6em}
+.font-1_8{font-size: 1.8em}
+.font-2{font-size: 2em}
+.font-2_5{font-size: 2.5em}
+.font-3{font-size: 3em}
+.font-3_5{font-size: 3.5em}
+.font-4{font-size: 4em}
+
+
+/* FLEX CLASSES */
+.flex{display: flex;}
+.inline-flex{display: inline-flex;}
+.flex-row{flex-direction: row;}
+.flex-column{flex-direction: column;}
+.v-center{align-items: center;}
+.v-spacebetween{align-items: space-between;}
+.v-spacearound{align-items: space-around;}
+.v-start{align-items: flex-start;}
+.v-end{align-items: flex-start;}
+.h-center{justify-content: center;}
+.h-spacebetween{justify-content: space-between;}
+.h-spacearound{justify-content: space-around;}
+.h-start{justify-content: flex-start;}
+.h-end{justify-content: flex-start;}
+
+/* TEXT ALIGN CLASSES */
+.text-center{text-align: center;}
+.text-left{text-align: left;}
+.text-right{text-align: right;}
+.text-justify{text-align: justify;}
+
+/* WELCOME SECTION */
+.welcome.section{ background: var(--light-grey-color) url('../images/welcome.jpg') no-repeat center / cover; }
+.welcome.section .content h1{text-shadow: -6px 0px 0px #fff, 0 0 0 #fff,0 0 0 #fff;color: #3d2149}

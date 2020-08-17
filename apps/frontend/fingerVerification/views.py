@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.conf import settings
 import time
 import busio
 from digitalio import DigitalInOut, Direction
@@ -8,6 +9,18 @@ import serial
 from apps.appcontrol.employees.models import Employees
 
 def index(request):
+    data = {
+        'app_name': settings.APP_NAME,
+        'page_name': 'Manage Users',
+        'template_folder': 'frontend/home',
+        'template_file': 'view.html',        
+    }
+
+    return render(request, data['template_folder'] + '/' + data['template_file'], data)
+
+
+
+def finger(request):
     
     uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
 

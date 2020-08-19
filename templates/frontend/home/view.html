@@ -17,9 +17,21 @@
             <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
                 <h1 class="font-3 mb-10 animate-top">Bio-Metric Authentication</h1>
                 <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to authenticate yourself!!</p>
-                <a href="#" class="btn finger-btn animate-left">Authenticate</a>
+                <a href="javascript:void(0)" class="btn finger-btn animate-left">Authenticate</a>
             </div>
         </div>
     </section>
+
+    <div class="popUp fingerPrintVerification">
+        <div class="popUpOverlay"></div>
+        <div class="popUpWrapper">
+            <div class="popUpImage">
+                <img src="{{ APPCONTROL_STATIC_ROOT }}images/fingerprint.gif" alt="Finger Print">
+            </div>
+            <div class="popUpContent">
+                <h3>Place Your Finger To Authenticate!!</h3>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

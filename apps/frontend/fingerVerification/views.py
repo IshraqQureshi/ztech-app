@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 import time
 import busio
 from digitalio import DigitalInOut, Direction
@@ -19,7 +20,7 @@ def index(request):
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
 
 
-
+@csrf_exempt
 def finger(request):
     
     uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
@@ -36,12 +37,16 @@ def finger(request):
 
     if finger.image_2_tz(1) != adafruit_fingerprint.OK:
         print('Finger Not Found')
-        return HttpResponse('Finger Not Found')
+        response = {'error': 'Verification Failed'}
+        return JsonResponse(response)
     print("Searching...")
 
     if finger.finger_search() != adafruit_fingerprint.OK:
         print('Finger Not Found')
-        return HttpResponse('Finger Not Found')
+        response = {'error': 'Verification Failed'}
+        return JsonResponse(response)
     
     employees = Employees.objects.filter(fingerprint_1=finger.finger_id).values('first_name')    
-    return HttpResponse('Welcome '+ employees[0]['first_name'])
+        
+    response = {'employee_name': employees[0]}
+    return JsonResponse(response)

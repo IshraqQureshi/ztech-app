@@ -14,6 +14,6 @@ urlpatterns = [
     path('appcontrol/myprofile/', include('apps.appcontrol.user_profile.urls')),
     path('appcontrol/employees/', include('apps.appcontrol.employees.urls')),
 
-    path('finger-verificaiton/', include('apps.frontend.fingerVerification.urls')),
+    path('finger-verification/', include('apps.frontend.fingerVerification.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

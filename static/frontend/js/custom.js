@@ -30,4 +30,39 @@ $(document).ready(function(){
 
     }, 4000 )
 
+    var finger_verify = 0;
+
+    $('.finger-btn').click(function(e){
+        e.preventDefault();
+        console.log(finger_verify);
+        if ( finger_verify < 5 )
+        {
+            $('.popUp').addClass('active');
+
+            $.ajax({
+                url: '/finger-verification/finger_print_verification/',
+                type: 'POST',        
+                success: function(response){
+                    if( response.employee_name )
+                    {
+                        alert('Welcome ' + response.employee_name.first_name);                        
+                    }
+                    else{
+                        finger_verify = finger_verify + 1;
+                        alert(finger_verify)
+                    }
+
+                    $('.popUp').removeClass('active');
+                },
+                error: function(){
+                    alert('Server Error!!');
+                    $('.popUp').removeClass('active');
+                }
+            })
+        }
+        else{
+            alert('Out Of Verifications')
+        }
+    })
+
 });

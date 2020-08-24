@@ -46,7 +46,7 @@ def finger(request):
         response = {'error': 'Verification Failed'}
         return JsonResponse(response)
     
-    employees = Employees.objects.filter(fingerprint_1=finger.finger_id).values('first_name')    
+    employees = Employees.objects.filter(fingerprint_1=finger.finger_id).values().first()
         
-    response = {'employee_name': employees[0]}
+    response = {'employee_detail': employees}
     return JsonResponse(response)

@@ -48,12 +48,13 @@ img{max-width: 100%;}
 .mt-10{margin-top: 10px}
 .mt-20{margin-top: 20px}
 .mb-10{margin-bottom: 10px}
-.mb-10{margin-bottom: 20px}
+.mb-20{margin-bottom: 20px}
 .ml-10{margin-left: 10px}
 .ml-20{margin-left: 20px}
 .m-10{margin: 10px}
 .m-20{margin: 20px}
 .m-auto{margin: auto}
+.m-none{margin: 0}
 
 /* PADDING CLASSES */
 .pr-10{padding-right: 10px}
@@ -121,6 +122,7 @@ img{max-width: 100%;}
 
 section.finger-print{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
 
+section.employee_details{position: absolute;right: -100vw;background: #fff000;}
 
 .welcome.section .animate-top{
     transform: translateY(0);

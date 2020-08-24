@@ -33,8 +33,8 @@ $(document).ready(function(){
     var finger_verify = 0;
 
     $('.finger-btn').click(function(e){
-        e.preventDefault();
-        console.log(finger_verify);
+        e.preventDefault();        
+
         if ( finger_verify < 5 )
         {
             $('.popUp').addClass('active');
@@ -43,9 +43,16 @@ $(document).ready(function(){
                 url: '/finger-verification/finger_print_verification/',
                 type: 'POST',        
                 success: function(response){
-                    if( response.employee_name )
+                    if( response.employee_detail )
                     {
-                        alert('Welcome ' + response.employee_name.first_name);                        
+                        $('#employee_name').text(response.employee_detail.first_name);
+                        $('.finger-print.section').animate({
+                            left: '-100vw',
+                        }, 1000);
+                
+                        $('.employee_details.section').animate({
+                            right: '0',
+                        }, 1000);
                     }
                     else{
                         finger_verify = finger_verify + 1;
@@ -54,8 +61,8 @@ $(document).ready(function(){
 
                     $('.popUp').removeClass('active');
                 },
-                error: function(){
-                    alert('Server Error!!');
+                error: function(){                    
+                    finger_verify = finger_verify + 1;
                     $('.popUp').removeClass('active');
                 }
             })

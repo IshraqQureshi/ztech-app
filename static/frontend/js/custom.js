@@ -43,9 +43,16 @@ $(document).ready(function(){
                 url: '/finger-verification/finger_print_verification/',
                 type: 'POST',        
                 success: function(response){
-                    if( response.employee_detail )
+                    if( response.employee_name )
                     {
-                        $('#employee_name').text(response.employee_detail.first_name);
+                        $('#employee_name').text(response.employee_name);
+                        $('#punch_time').text(response.punch_in);
+                        $('#date').text(response.date);
+                        $('#punch').text('Punch Out Time');
+                        if(response.punch_type)
+                        {
+                            $('#punch').text('Punch In Time');
+                        }
                         $('.finger-print.section').animate({
                             left: '-100vw',
                         }, 1000);

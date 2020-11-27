@@ -20,6 +20,7 @@ class EmployeeForm():
             self.image_dir = form_data.get('image_dir')
             self.fingerprint_1 = form_data.get('fingerprint_1')
             self.fingerprint_2 = form_data.get('fingerprint_2')
+            self.face_id = form_data.get('face_id')
             self.status = form_data.get('designation')
             
     def validate(self, edit= False):
@@ -71,6 +72,9 @@ class EmployeeForm():
 
         if self.fingerprint_1 == '':
             self.error['fingerprint_1'] = 'Fingerprint is required'        
+        
+        if self.face_id == '':
+            self.error['face_id'] = 'Face is required'        
 
         return self.error
 

@@ -105,12 +105,27 @@
                 <button class="btn btn-primary" id="fingerprint_btn_1" data-fingerprint="1">Register Finger Print</button>
                 <input type="hidden" name="fingerprint_1" value="{{employee_data.fingerprint_1}}">                
                 {% if employee_data.fingerprint_1  %}
-                    <p class="fingerprint_success">Fingerprint Added</p>
+                    <p class="fingerprint_success">Fingerprint Not Added</p>
                 {% else %}
-                    <p class="fingerprint_success" style="display:none">Fingerprint Not Added</p>
+                    <p class="fingerprint_success" style="display:none">Fingerprint Added</p>
                 {% endif %}
                 
                 <p class="text-danger">{{ errors.fingerprint_1 }}</p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="first_name" class="font-weight-bold">Face <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <button class="btn btn-primary" id="face_btn" data-fingerprint="1">Register Face</button>
+                <input type="hidden" name="face_id" value="{{employee_data.face_id}}">                                
+                {% comment %} {% if employee_data.face_id  %}
+                    <p class="fingerprint_success" style="display:none">Face Registered</p>
+                {% else %}
+                    <p class="fingerprint_success">Face Not Registered</p>
+                {% endif %}  {% endcomment %}
+                <p class="text-danger">{{ errors.face_id }}</p>
             </div>
         </div>
         <div class="form-group row">

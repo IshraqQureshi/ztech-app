@@ -1,0 +1,48 @@
+{% extends '../template/template.html' %}
+
+{% block content %}
+  <h1 class="h3 mb-2 text-gray-800 custom-page-heading">{{ page_name }}</h1>    
+  <div class="add_btn mb-3">
+    <a href="{% url 'add_visitor' %}" class="btn btn-warning">Add Visitor</a>
+  </div>
+  <div class="card shadow mb-4">            
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="userRolesData" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Purpose</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Purpose</th>
+              <th>Action</th>
+            </tr>
+          </tfoot>
+          <tbody>
+              {% for visitor in visitors %}
+                <tr>
+                    <td>{{ visitor.first_name }}</td>
+                    <td>{{ visitor.last_name }}</td>
+                    <td>{{ visitor.email }}</td>
+                    <td>{{ visitor.purpose }}</td>
+                    <td>                      
+                        <a href="{% url 'edit_visitor' visitor_id=visitor.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'delete_visitor' visitor_id=visitor.id %}" class="btn btn-danger">Delete</a>                      
+                    </td>
+                </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>          
+  </div>
+{% endblock %}

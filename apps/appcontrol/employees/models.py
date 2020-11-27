@@ -12,4 +12,5 @@ class Employees(models.Model):
     image_dir = models.CharField('image_dir', max_length=256)
     fingerprint_1 = models.IntegerField('fingerprint_1')
     fingerprint_2 = models.IntegerField('fingerprint_2')
+    face_id = models.IntegerField('face_id', default=0)
     status = models.BooleanField('status')

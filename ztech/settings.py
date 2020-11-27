@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'apps.appcontrol.userroles',
     'apps.appcontrol.user_profile',
     'apps.appcontrol.employees',
+    'apps.appcontrol.visitors',
     'apps.appcontrol.attendance',
 
     'apps.frontend.fingerVerification',

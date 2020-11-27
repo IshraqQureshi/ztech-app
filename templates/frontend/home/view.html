@@ -1,7 +1,7 @@
 {% extends '../templates/template.html' %}
 
 {% block content %}
-    
+    <!-- WELCOME SECTION -->
     <section class="vh-100 section welcome w-100 animate-section">
         <div class="container vh-100 flex v-center h-center">
             <div class="content vw-75 vh-50 m-auto flex v-center h-center flex-column text-center">
@@ -11,7 +11,34 @@
             </div>
         </div>
     </section>
+    <!-- WELCOME SECTION -->
 
+    <!-- WHO YOU ARE SECTION -->
+    <section class="vh-100 section who_you_are w-100" >
+        <div class="container vh-100 flex v-center h-start">
+            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
+                <h1 class="font-3 mb-10 animate-top">Who your are?</h1>
+                <a href="javascript:void(0)" class="btn employee-btn animate-left">Employee</a>
+                <a href="javascript:void(0)" class="btn visitor-btn animate-left">Visitor</a>
+            </div>
+        </div>
+    </section>
+    <!-- WHO YOU ARE SECTION -->
+
+    <!-- FACE RECOGNITION SECTION -->
+    <section class="vh-100 section face_recog w-100" >
+        <div class="container vh-100 flex v-center h-start">
+            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
+                <h1 class="font-3 mb-10 animate-top">Face Recognition</h1>
+                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to authenticate yourself!!</p>
+                <a href="javascript:void(0)" class="btn face_btn animate-left">Authenticate</a>
+                <a href="javascript:void(0)" class="btn back_btn animate-left">Go Back</a>
+            </div>
+        </div>
+    </section>
+    <!-- FACE RECOGNITION SECTION -->
+
+    <!-- FINGER PRINT VERIFICATION SECTION -->
     <section class="vh-100 section finger-print w-100" >
         <div class="container vh-100 flex v-center h-start">
             <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
@@ -21,7 +48,9 @@
             </div>
         </div>
     </section>
+    <!-- FINGER VERIFICATION SECTION -->
 
+    <!-- EMPLOYEE ATTENDANCE SECTION -->
     <section class="vh-100 section employee_details w-100">
         <div class="container vh-100 flex v-center h-center">
             <div class="content vw-50 vh-100 flex v-start h-center flex-column text-center">
@@ -31,8 +60,34 @@
                 <p class="w-100 m-none" id="date">Punch In Time</p>
             </div>
         </div>
-    </section>    
+    </section>
+    <!-- EMPLOYEE ATTENDANCE SECTION -->
 
+    <!-- VISITOR FACE CAPTURE SECTION -->
+    <section class="vh-100 section face_capture w-100" >
+        <div class="container vh-100 flex v-center h-start">
+            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
+                <h1 class="font-3 mb-10 animate-top">Face Capture</h1>
+                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to capture your face!!</p>
+                <a href="javascript:void(0)" class="btn capture_btn animate-left">Capture</a>
+                <a href="javascript:void(0)" class="btn back_btn animate-left">Go Back</a>
+            </div>
+        </div>
+    </section>
+    <!-- VISITOR FACE CAPTURE SECTION -->
+
+    <!-- VISITOR FINGER PRINT VERIFICATION SECTION -->
+    <section class="vh-100 section finger-capture w-100" >
+        <div class="container vh-100 flex v-center h-start">
+            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
+                <h1 class="font-3 mb-10 animate-top">Finger Capture</h1>
+                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to capture your finger!!</p>
+                <a href="javascript:void(0)" class="btn finger-btn animate-left">Capture</a>                
+            </div>
+        </div>
+    </section>
+
+    <!-- FINGER AUTHENTICATIO POPUP SECTION -->
     <div class="popUp fingerPrintVerification">
         <div class="popUpOverlay"></div>
         <div class="popUpWrapper">
@@ -44,5 +99,6 @@
             </div>
         </div>
     </div>
+    <!-- FINGER AUTHENTICATION SECTION -->
 
 {% endblock %}

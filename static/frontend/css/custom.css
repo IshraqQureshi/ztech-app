@@ -121,6 +121,10 @@ img{max-width: 100%;}
 .welcome.section .content h1{text-shadow: 0px -6px 0px #fff, 0px 6px 0 #fff, 0 0 0 #fff;color: #3d2149;position: relative;}
 
 section.finger-print{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
+section.face_recog{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
+section.who_you_are{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
+section.face_capture{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
+section.finger-capture{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
 
 section.employee_details{position: absolute;right: -100vw;background: #fff000;}
 
@@ -144,6 +148,110 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
     animation-name: slideLeft;
     animation-duration: 2.5s;
     animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    
+}
+
+.who_you_are.section .animate-top{
+    transform: translateY(0);
+    animation-name: slideTop;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
+    animation-delay: 5.3s;
+}
+
+.who_you_are.section .animate-bottom{
+    transform: translateY(0);
+    animation-name: slideBottom;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
+    animation-delay: 5.3s;
+}
+
+.who_you_are.section .animate-left{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideLeft;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 5.3s;
+    
+}
+
+.finger-capture.section .animate-top{
+    transform: translateY(0);
+    animation-name: slideTop;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
+    animation-delay: 5.3s;
+}
+
+.finger-capture.section .animate-bottom{
+    transform: translateY(0);
+    animation-name: slideBottom;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
+    animation-delay: 5.3s;
+}
+
+.finger-capture.section .animate-left{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideLeft;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 5.3s;
+    
+}
+
+.face_capture.section .animate-top{
+    transform: translateY(0);
+    animation-name: slideTop;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
+    animation-delay: 5.3s;
+}
+
+.face_capture.section .animate-bottom{
+    transform: translateY(0);
+    animation-name: slideBottom;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
+    animation-delay: 5.3s;
+}
+
+.face_capture.section .animate-left{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideLeft;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 5.3s;
+    
+}
+
+.face_recog.section .animate-top{
+    transform: translateY(0);
+    animation-name: slideTop;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
+    animation-delay: 5.3s;
+}
+
+.face_recog.section .animate-bottom{
+    transform: translateY(0);
+    animation-name: slideBottom;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
+    animation-delay: 5.3s;
+}
+
+.face_recog.section .animate-left{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideLeft;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 5.3s;
     
 }
 

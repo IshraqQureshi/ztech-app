@@ -119,17 +119,17 @@ def save(request, visitor_id= None, visitor_image= None):
     if visitor_id is not None:
         save_visitor = models.Visitors.objects.get(id=visitor_id)
     
-    save_visitor.first_name = request.POST.get('first_name')
-    save_visitor.last_name = request.POST.get('last_name')
-    save_visitor.email = request.POST.get('email')
-    save_visitor.nic_number = request.POST.get('nic_number')
-    save_visitor.phone_number = request.POST.get('phone_number')
-    save_visitor.address = request.POST.get('address')
-    save_visitor.purpose = request.POST.get('purpose')
-    save_visitor.want_to = request.POST.get('want_to')
-    save_visitor.fingerprint_1 = request.POST.get('fingerprint_1')
-    save_visitor.fingerprint_2 = request.POST.get('fingerprint_1')
-    save_visitor.face_id = request.POST.get('face_id')    
+    save_visitor.first_name = request.GET.get('first_name')
+    save_visitor.last_name = request.GET.get('last_name')
+    save_visitor.email = request.GET.get('email')
+    save_visitor.nic_number = request.GET.get('nic_number')
+    save_visitor.phone_number = request.GET.get('phone_number')
+    save_visitor.address = request.GET.get('address')
+    save_visitor.purpose = request.GET.get('purpose')
+    save_visitor.want_to = request.GET.get('want_to')
+    save_visitor.fingerprint_1 = request.GET.get('fingerprint_1')
+    save_visitor.fingerprint_2 = request.GET.get('fingerprint_1')
+    save_visitor.face_id = request.GET.get('face_id')    
 
     # print(request.POST)
     save_visitor.save()            
@@ -251,7 +251,7 @@ def ajax_face(request):
         faces = faceDetect.detectMultiScale(gray, 1.3, 5)
         for(x,y,w,h) in faces:
             sampleNum = sampleNum+1
-            cv2.imwrite(settings.BASE_DIR+'/ml/dataset/user.'+str(id)+'.'+str(sampleNum)+'.jpg', gray[y:y+h,x:x+w])
+            cv2.imwrite(settings.BASE_DIR+'/ml/frontend-dataset/user.'+str(id)+'.'+str(sampleNum)+'.jpg', gray[y:y+h,x:x+w])
             cv2.rectangle(img,(x,y),(x+w,y+h), (0,255,0), 2)
             cv2.waitKey(250)
         cv2.imshow("Face",img)
@@ -271,7 +271,7 @@ def train_ml(request):
     #Creating a recognizer to train
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     #Path of the samples
-    path = settings.BASE_DIR+'/ml/dataset'
+    path = settings.BASE_DIR+'/ml/frontend-dataset'
 
     # To get all the images, we need corresponing id
     def getImagesWithID(path):
@@ -311,7 +311,7 @@ def train_ml(request):
     recognizer.train(faces, ids)
 
     # Save the recogzier state so that we can access it later
-    recognizer.save(settings.BASE_DIR+'/ml/recognizer/trainingData.yml')
+    recognizer.save(settings.BASE_DIR+'/ml/frontend-recognizer/trainingData.yml')
     cv2.destroyAllWindows()
 
     return redirect('/')

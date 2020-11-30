@@ -29,16 +29,18 @@
           </tfoot>
           <tbody>
               {% for employee in employees %}
-                <tr>
-                    <td>{{ employee.first_name }}</td>
-                    <td>{{ employee.last_name }}</td>
-                    <td>{{ employee.email }}</td>
-                    <td>{{ employee.designation }}</td>
-                    <td>                      
-                        <a href="{% url 'edit_employee' employee_id=employee.id %}" class="btn btn-primary">Edit</a>
-                        <a href="{% url 'delete_employee' employee_id=employee.id %}" class="btn btn-danger">Delete</a>                      
-                    </td>
-                </tr>
+                {% if employee.id != 1 %}
+                  <tr>
+                      <td>{{ employee.first_name }}</td>
+                      <td>{{ employee.last_name }}</td>
+                      <td>{{ employee.email }}</td>
+                      <td>{{ employee.designation }}</td>
+                      <td>                      
+                          {% comment %} <a href="{% url 'edit_employee' employee_id=employee.id %}" class="btn btn-primary">Edit</a> {% endcomment %}
+                          <a href="{% url 'delete_employee' employee_id=employee.id %}" class="btn btn-danger">Delete</a>                      
+                      </td>
+                  </tr>
+                {% endif %}
               {% endfor %}
           </tbody>
         </table>

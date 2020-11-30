@@ -14,6 +14,7 @@ urlpatterns = [
     path('appcontrol/myprofile/', include('apps.appcontrol.user_profile.urls')),
     path('appcontrol/employees/', include('apps.appcontrol.employees.urls')),
     path('appcontrol/visitors/', include('apps.appcontrol.visitors.urls')),
+    path('appcontrol/attendance/', include('apps.appcontrol.attendance.urls')),
 
     path('frontend/', include('apps.frontend.fingerVerification.urls')),
     

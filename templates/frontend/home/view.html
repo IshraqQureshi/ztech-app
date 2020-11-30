@@ -15,24 +15,39 @@
 
     <!-- WHO YOU ARE SECTION -->
     <section class="vh-100 section who_you_are w-100" >
-        <div class="container vh-100 flex v-center h-start">
-            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
-                <h1 class="font-3 mb-10 animate-top">Who your are?</h1>
-                <a href="javascript:void(0)" class="btn employee-btn animate-left">Employee</a>
-                <a href="javascript:void(0)" class="btn visitor-btn animate-left">Visitor</a>
+        <div class="container vh-100 flex flex-column w-100 v-center h-center">
+            <h2 class="font-3 mb-10 mt-0 animate-top">Who You Are?</h2>
+            <div class="who_you_are_wrapper">
+                <div class="choose_option employee_option animate-left">
+                    <a href="javascript:void(0)" class="employee-btn animate-left">
+                        <img src="{{ FRONTEND_STATIC_ROOT }}/images/employee.png" alt="Employee">
+                        <h4>Employee</h4>
+                    </a>
+                </div>
+                <div class="choose_option_divider animate-bottom"></div>
+                <div class="choose_option visitor_option animate-right">
+                    <a href="javascript:void(0)" class="visitor-btn">
+                        <img src="{{FRONTEND_STATIC_ROOT}}/images/visitor.png" alt="Employee">
+                        <h4>Visitor</h4>
+                    </a>
+                </div>
             </div>
-        </div>
+        </div>        
     </section>
     <!-- WHO YOU ARE SECTION -->
 
     <!-- FACE RECOGNITION SECTION -->
     <section class="vh-100 section face_recog w-100" >
-        <div class="container vh-100 flex v-center h-start">
-            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
-                <h1 class="font-3 mb-10 animate-top">Face Recognition</h1>
-                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to authenticate yourself!!</p>
-                <a href="javascript:void(0)" class="btn face_btn animate-left">Authenticate</a>
-                <a href="javascript:void(0)" class="btn back_btn animate-left">Go Back</a>
+        <div class="container vh-100 flex v-center w-100">
+            <div class="face_recog_content">
+                <h2 class="font-3">Face Recognition Using ML</h2>
+                <div class="btn_wrapper">
+                    <a href="javascript:void(0)" class="face_btn animate-left">Authenticate</a>
+                    <a href="javascript:void(0)" class="back_btn animate-left">Go Back</a>
+                </div>
+            </div>
+            <div class="face_recog_img">
+                <img src="{{FRONTEND_STATIC_ROOT}}/images/face-recog.gif" alt="Face Recognition">
             </div>
         </div>
     </section>
@@ -40,11 +55,16 @@
 
     <!-- FINGER PRINT VERIFICATION SECTION -->
     <section class="vh-100 section finger-print w-100" >
-        <div class="container vh-100 flex v-center h-start">
-            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
-                <h1 class="font-3 mb-10 animate-top">Bio-Metric Authentication</h1>
-                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to authenticate yourself!!</p>
-                <a href="javascript:void(0)" class="btn finger-btn animate-left">Authenticate</a>
+        <div class="container vh-100 flex v-center w-100">
+            <div class="finger_recog_content">
+                <h2 class="font-3">Bio-Metric Authentication</h2>
+                <div class="btn_wrapper">
+                    <a href="javascript:void(0)" class="finger-btn animate-left">Authenticate</a>
+                    <a href="javascript:void(0)" class="back_btn animate-left">Go Back</a>
+                </div>
+            </div>
+            <div class="finger_recog_img">
+                <img src="{{FRONTEND_STATIC_ROOT}}/images/finger-recog.gif" alt="Finger Recognition">
             </div>
         </div>
     </section>
@@ -65,25 +85,95 @@
 
     <!-- VISITOR FACE CAPTURE SECTION -->
     <section class="vh-100 section face_capture w-100" >
-        <div class="container vh-100 flex v-center h-start">
-            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
-                <h1 class="font-3 mb-10 animate-top">Face Capture</h1>
-                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to capture your face!!</p>
-                <a href="javascript:void(0)" class="btn capture_btn animate-left">Capture</a>
-                <a href="javascript:void(0)" class="btn back_btn animate-left">Go Back</a>
+        <div class="container vh-100 flex v-center w-100">
+            <div class="face_recog_content">
+                <h2 class="font-3">Face Recognition Using ML</h2>
+                <div class="btn_wrapper">
+                    <a href="javascript:void(0)" class="capture_btn animate-left">Capture</a>
+                    <a href="javascript:void(0)" class="back_btn animate-left">Go Back</a>
+                </div>
             </div>
-        </div>
+            <div class="face_recog_img">
+                <img src="{{FRONTEND_STATIC_ROOT}}/images/face-recog.gif" alt="Face Recognition">
+            </div>
+        </div>        
     </section>
     <!-- VISITOR FACE CAPTURE SECTION -->
 
     <!-- VISITOR FINGER PRINT VERIFICATION SECTION -->
     <section class="vh-100 section finger-capture w-100" >
-        <div class="container vh-100 flex v-center h-start">
-            <div class="content vw-50 vh-100 flex v-start h-center flex-column text-left">
-                <h1 class="font-3 mb-10 animate-top">Finger Capture</h1>
-                <p class="font-1_6 mt-10 mb-20 animate-bottom">Press button to capture your finger!!</p>
-                <a href="javascript:void(0)" class="btn finger-btn animate-left">Capture</a>                
+        <div class="container vh-100 flex v-center w-100">
+            <div class="finger_recog_content">
+                <h2 class="font-3">Bio-Metric Authentication</h2>
+                <div class="btn_wrapper">
+                    <a href="javascript:void(0)" class="btn finger-capture-btn animate-left">Capture</a>
+                    <a href="javascript:void(0)" class="back_btn animate-left">Go Back</a>
+                </div>
             </div>
+            <div class="finger_recog_img">
+                <img src="{{FRONTEND_STATIC_ROOT}}/images/finger-recog.gif" alt="Finger Recognition">
+            </div>
+        </div>
+    </section>
+
+    <section class="vh-100 section visitor-form w-100" >
+        <div class="container vh-100 flex h-start">
+            <div class="visitor_form_wrapper">
+                <form class="form" action="/frontend/save_visitor">
+                    <div class="form_row">
+                        <div class="form_field">
+                            <label>First Name</label>
+                            <input type="text" name="first_name">
+                        </div>
+                        <div class="form_field">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name">
+                        </div>
+                    </div>
+                    <div class="form_row">
+                        <div class="form_field">
+                            <label>Email</label>
+                            <input type="email" name="email">
+                        </div>
+                        <div class="form_field">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone_number">
+                        </div>
+                    </div>
+                    <div class="form_row">
+                        <div class="form_field">
+                            <label>NIC Number</label>
+                            <input type="text" name="nic_number">
+                        </div>
+                        <div class="form_field">
+                            <label>Whom Want To Meet?</label>
+                            <select name="want_to">
+                                <option value="1">Ishraq</option>
+                                <option value="2">Ismail</option>                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form_row">
+                        <div class="form_field">
+                            <label>Address</label>
+                            <textarea name="address"></textarea>
+                        </div>
+                        <div class="form_field">
+                            <label>Purpose</label>
+                            <textarea name="purpose"></textarea>
+                        </div>
+                    </div>
+                    <div class="submit_row">
+                        <input type="hidden" name="fingerprint_1" value="0">
+                        <input type="hidden" name="fingerprint_2" value="0">
+                        <input type="hidden" name="face_id" value="0">
+                        <div class="submit_field">
+                            <input type="submit" name="submit">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="visitor_Form_img"></div>
         </div>
     </section>
 

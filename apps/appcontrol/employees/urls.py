@@ -8,5 +8,5 @@ urlpatterns = [
     path('ajax_register_face/', views.ajax_face, name='register_face'),
     path('edit/<int:employee_id>', views.edit, name='edit_employee'),
     path('delete/<int:employee_id>', views.delete, name='delete_employee'),
-    path('train/', views.train_ml, name='train')
+    path('train/', views.train_ml, name='train_employees')
 ]

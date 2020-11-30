@@ -4,6 +4,7 @@ $(document).ready(function(){
     var finger_verify = 0;
     var face_verify = 0;
     let employee_id = false;
+    localStorage.clear();
 
     // Section Aimnations
     setTimeout( () => {
@@ -42,14 +43,20 @@ $(document).ready(function(){
         e.preventDefault();
         $('.face_recog').animate({
             left: '0',
-        }, 1000);
+        }, 500, () => {
+            $('.face_recog_content').css('top', 0);
+            $('.face_recog_img').css('top', 0);
+        });
     })
 
     $('.visitor-btn').click(function(e){
         e.preventDefault();
         $('.face_capture').animate({
             left: '0',
-        }, 1000);
+        }, 500, () => {
+            $('.face_recog_content').css('top', 0);
+            $('.face_recog_img').css('top', 0);
+        });
     })
 
     $('.back_btn').click(function(e){
@@ -79,7 +86,10 @@ $(document).ready(function(){
 
                             $('.finger-print').animate({
                                 left: '0',
-                            }, 1000); 
+                            }, 500, () => {
+                                $('.finger_content').css('top', 0);
+                                $('.finger_img').css('top', 0);
+                            }); 
 
                         });
 
@@ -107,10 +117,8 @@ $(document).ready(function(){
                 type: 'POST',        
                 success: function(response){
                     if( response.employee_name )
-                    {
-                        console.log(employee_id);
-                        console.log(response.employee_id);
-                        if(response.employee_id == employee_id)
+                    {                        
+                        if(response.employee_faceId)
                         {
                             $('#employee_name').text(response.employee_name);
                             $('#punch_time').text(response.punch_in);
@@ -161,15 +169,83 @@ $(document).ready(function(){
             url: '/frontend/face_capture/',
             type: 'POST',        
             success: function(response){
-                if( response.face_id )
+                if( response.status )
                 {
+                    if(response.save)
+                    {
+                        localStorage.setItem('visitor_face_id', response.face_id)
+                    }
+                    else
+                    {
+                        localStorage.setItem('visitor_face_id', response.visitor_id)
+                    }
+
                     $('.finger-capture').animate({
                         left: '0',
-                    }, 1000);                             
+                    }, 500, () => {
+                        $('.finger_recog_content').css('top', 0);
+                        $('.finger_recog_img').css('top', 0);
+                    });                    
+                }
+                else{
+                    alert('Please Try Again')
                 }
             }
         });
 
+    });
+    
+    $('.finger-capture-btn').click(function(e){
+
+        e.preventDefault();                
+        $('.popUp').addClass('active');
+
+        $.ajax({
+            url: '/frontend/finger_print_capture/',
+            type: 'POST',        
+            success: function(response){
+                if(response.status)
+                {
+                    if(response.save)
+                    {
+                        localStorage.setItem('visitor_finger', response.fingerprint_id)                        
+                    }
+                    else{
+                        localStorage.setItem('visitor', JSON.stringify(response.visitor))                        
+                    }
+
+                    $('.visitor-form').animate({
+                        left: '0',
+                    }, 1000);
+
+                    let face_id = localStorage.getItem('visitor_face_id')
+                    let visitor_finger = localStorage.getItem('visitor_finger')
+                    let visitor = localStorage.getItem('visitor')
+
+                    $('input[name=face_id]').val(face_id)
+                    $('input[name=fingerprint_1]').val(visitor_finger)
+                    $('input[name=fingerprint_2]').val(visitor_finger)
+                    
+                    if( visitor != null )
+                    {
+                        visitor = JSON.parse(visitor)
+
+                        $('input[name=first_name]').val(visitor.first_name)
+                        $('input[name=last_name]').val(visitor.last_name)
+                        $('input[name=email]').val(visitor.email)
+                        $('input[name=nic_number]').val(visitor.nic_number)
+                        $('input[name=phone_number]').val(visitor.phone_number)
+                        $('input[name=address]').val(visitor.address)
+                    }
+
+                    
+                }
+                $('.popUp').removeClass('active');
+            },
+            error: function(){                    
+                $('.popUp').removeClass('active');
+            }
+        })        
     })
 
 });

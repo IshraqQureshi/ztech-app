@@ -76,8 +76,8 @@
     </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link" href="#" aria-expanded="true">
+    <li class="nav-item">        
+        <a class="nav-link {% if request.path == '/appcontrol/attendance/manage' %} active {% endif %}" href="{% url 'manage_attendance' %}">
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <span>Daily Attendance</span>
         </a>
@@ -85,9 +85,9 @@
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'train_employees' %}">
           <i class="fa fa-cogs" aria-hidden="true"></i>
-          <span>Settings</span>
+          <span>Train Dataset</span>
         </a>
     </li>      
     

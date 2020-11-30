@@ -1,0 +1,41 @@
+{% extends '../template/template.html' %}
+
+{% block content %}
+  <h1 class="h3 mb-2 text-gray-800 custom-page-heading">{{ page_name }}</h1>    
+  <div class="card shadow mb-4">            
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="userRolesData" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Employee Name</th>
+              <th>Date</th>
+              <th>Time</th>              
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Employee Name</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+          </tfoot>
+          <tbody>          
+              {% for attend in attendance %}                                
+                  <tr>
+                    
+                      {% for employee in employees %}      
+                        {% if employee.id|slugify == attend.employee_id %}
+                          <td>{{employee.first_name}} {{employee.last_name}}</td>                        
+                        {% endif %}
+                      {% endfor %}
+                      <td>{{ attend.date }}</td>
+                      <td>{{ attend.punch_in }}</td>                      
+                  </tr>                
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>          
+  </div>
+{% endblock %}

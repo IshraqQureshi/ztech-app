@@ -120,13 +120,14 @@ img{max-width: 100%;}
 .welcome.section .content h3{position: relative;}
 .welcome.section .content h1{text-shadow: 0px -6px 0px #fff, 0px 6px 0 #fff, 0 0 0 #fff;color: #3d2149;position: relative;}
 
-section.finger-print{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
-section.face_recog{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
-section.who_you_are{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
-section.face_capture{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
-section.finger-capture{position: absolute;left: -100vw;background: #fff url('../images/finger-print-banner.jpg') no-repeat bottom right / contain;}
+section.finger-print{position: absolute;left: -100vw;background: #fff }
+section.face_recog{position: absolute;left: -100vw;background: #fff}
+section.who_you_are{position: absolute;left: -100vw;background: #fff url('../images/who-u-r-bg.jpg') no-repeat bottom right / cover;}
+section.face_capture{position: absolute;left: -100vw;background: #fff}
+section.finger-capture{position: absolute;left: -100vw;background: #fff;z-index: 99999;}
 
 section.employee_details{position: absolute;right: -100vw;background: #fff000;}
+section.visitor-form{position: absolute;left: -100vw;background: #e8e8e8;z-index: 999999;}
 
 .welcome.section .animate-top{
     transform: translateY(0);
@@ -168,6 +169,42 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
 }
 
 .who_you_are.section .animate-left{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideLeft;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 5.3s;
+    
+}
+
+.who_you_are.section .animate-right{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideRight;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 5.3s;
+    
+}
+
+.visitor-form.section .animate-top{
+    transform: translateY(0);
+    animation-name: slideTop;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
+    animation-delay: 5.3s;
+}
+
+.visitor-form.section .animate-bottom{
+    transform: translateY(0);
+    animation-name: slideBottom;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
+    animation-delay: 5.3s;
+}
+
+.visitor-form.section .animate-left{
     transform: translateX(0);
     transition: 2s ease all;
     animation-name: slideLeft;
@@ -234,7 +271,7 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
     animation-name: slideTop;
     animation-duration: 1.5s;
     animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
-    animation-delay: 5.3s;
+    animation-delay: 1s;
 }
 
 .face_recog.section .animate-bottom{
@@ -242,7 +279,7 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
     animation-name: slideBottom;
     animation-duration: 2s;
     animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
-    animation-delay: 5.3s;
+    animation-delay: 1s;
 }
 
 .face_recog.section .animate-left{
@@ -252,6 +289,16 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
     animation-duration: 2.5s;
     animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
     animation-delay: 5.3s;
+    
+}
+
+.face_recog.section .animate-right{
+    transform: translateX(0);
+    transition: 2s ease all;
+    animation-name: slideRight;
+    animation-duration: 2.5s;
+    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
+    animation-delay: 7.5s;
     
 }
 
@@ -334,6 +381,227 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
 }
 
 
+.form_row {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.form_field {
+    width: 50%;
+    margin-right: 50px;
+}
+
+.form_field label {
+    display: block;
+}
+
+.form_field input[type="text"], .form_field input[type="email"], .form_field input[type="tel"], .form_field textarea, .form_field select {
+    width: 100%;
+    padding: 10px 15px;
+    resize: none;
+    border: none;
+    box-shadow: 5px 5px 20px 0 rgba(0, 0, 0, 0.15);
+    outline: none;
+}
+
+.submit_field input[type='submit'] {
+    padding: 13px 30px;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    color: #000;
+    background: #ff5f5f;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.submit_field {
+    text-align: right;
+    padding-right: 50px;
+}
+
+
+.who_you_are_wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 60px;
+}
+
+.choose_option {
+    width: 350px;
+    height: 350px;
+    border-radius: 100%;
+    background: #fff;
+    box-shadow: 10px 10px 30px 0 rgba(0, 0, 0, 0.5);
+}
+
+.choose_option a {
+    display: flex;
+    padding: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    outline: none;
+}
+
+.choose_option a img {
+    max-width: 200px;
+}
+
+.choose_option a h4 {
+    font-size: 24px;
+    text-decoration: none;
+    color: #000;
+}
+
+.choose_option_divider {
+    width: 6px;
+    height: 100%;
+    background: #00000075;
+    border-radius: 40px;
+}
+
+#page-top .face_recog_content {
+    width: 45%;
+    position: absolute;    
+    top: -100vh;
+    bottom: 0;
+    height: 100%;
+    background: #fff url('../images/pattern-bg.jpg') no-repeat bottom / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 40px;
+    transform: translateX(0) skewX(-10deg);
+    z-index: 999;
+    left: 60px;
+    flex-direction: column;
+    transition: 1s cubic-bezier(0.6, -0.28, 0.735, 0.45) top;
+}
+
+.face_recog_content h2{
+    transform: skewX(10deg);
+}
+
+.face_recog_img {
+    width: 55%;
+    position: absolute;
+    right: 0;
+    top: 100vh;
+    bottom: 0;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s cubic-bezier(0.6, -0.28, 0.735, 0.45) top;
+}
+
+.btn_wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    transform: skewX(10deg);
+}
+
+.btn_wrapper a {padding: 12px 40px;background: #000;font-size: 18px;text-decoration: none;color: #fff;font-weight: 700;margin: 0 15px;}
+
+
+#page-top .finger_recog_content{
+    left: auto;
+    right: 60px;
+    transform: scaleX(-1) skewX(10deg);
+    z-index: 99999;
+    width: 45%;
+    position: absolute;
+    top: -100vh;
+    bottom: 0;
+    height: 100%;
+    background: #fff url(../images/pattern-bg.jpg) no-repeat bottom / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 40px;        
+    flex-direction: column;
+    transition: 1s cubic-bezier(0.6, -0.28, 0.735, 0.45) top;
+}
+
+#page-top .finger_recog_img {
+    right: auto;
+    left: 0;
+    z-index: 9999;
+    width: 55%;
+    position: absolute;    
+    top: 100vh;
+    bottom: 0;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s cubic-bezier(0.6, -0.28, 0.735, 0.45) top;
+}
+
+.finger_recog_content h2, .finger_recog_content .btn_wrapper{
+    transform: scaleX(-1) skewX(10deg);
+}
+
+.visitor_Form_img {
+    width: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #000 url('../images/form.jpg') no-repeat center / cover;
+}
+
+.visitor_form_wrapper {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+form.form {
+    width: 100%;
+}
+
+.thankyouSection{width: 100%;height: 100vh;overflow: hidden;background: #fff url('../images/thankyou.png') no-repeat center / cover;}
+
+.thankyouContent {
+    width: 768px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 200px;
+    background: #0b335494;
+    box-shadow: 5px 5px 30px 0 rgb(255 255 255 / 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.thankyouContent h2 {
+    font-size: 50px;
+    color: #fff;
+    margin: 0 0 20px;
+}
+
+.thankyouContent p {
+    font-size: 20px;
+    margin: 0 auto;
+    max-width: 70%;
+    text-align: center;
+    color: #fff;
+}
+
 @keyframes slideTop
 {
     0%{transform: translateY(-100vh);opacity: 0;}
@@ -352,5 +620,12 @@ section.employee_details{position: absolute;right: -100vw;background: #fff000;}
 {
     0%{transform: translateX(-100vw);opacity: 0;}
     90%{transform: translateX(50px);opacity: 1;}
+    100%{transform: translateX(0);opacity: 1;}
+}
+
+@keyframes slideRight
+{
+    0%{transform: translateX(100vw);opacity: 0;}
+    90%{transform: translateX(-50px);opacity: 1;}
     100%{transform: translateX(0);opacity: 1;}
 }

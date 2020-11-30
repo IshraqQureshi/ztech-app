@@ -35,7 +35,7 @@
                     <td>{{ visitor.email }}</td>
                     <td>{{ visitor.purpose }}</td>
                     <td>                      
-                        <a href="{% url 'edit_visitor' visitor_id=visitor.id %}" class="btn btn-primary">Edit</a>
+                        {% comment %} <a href="{% url 'edit_visitor' visitor_id=visitor.id %}" class="btn btn-primary">Edit</a> {% endcomment %}
                         <a href="{% url 'delete_visitor' visitor_id=visitor.id %}" class="btn btn-danger">Delete</a>                      
                     </td>
                 </tr>

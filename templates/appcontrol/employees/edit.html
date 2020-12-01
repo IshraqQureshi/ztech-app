@@ -85,18 +85,17 @@
                 <p class="text-danger">{{ errors.department_id }}</p>
             </div>            
         </div>
-        {% comment %} <div class="form-group row">
+        <div class="form-group row">
             <div class="col-lg-3">
-                <label for="image_dir" class="font-weight-bold">Employee Images <span class="text-danger">*</span></label>
+                <label for="image_dir" class="font-weight-bold">Employee Image <span class="text-danger">*</span></label>
             </div>
             <div class="col-lg-4">
-                <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput" name="employee_images_dir" value="{{ employee_image }}">
-                <label class="custom-file-label" for="myInput">{% if user_data.file_employee_image  %}{{ user_data.file_employee_image }}{% else %}Choose file{% endif %}</label>
-                <input type="hidden" name="file_employee_image" value="{{ user_data.file_employee_image }}">                
-                <a href="/{{ user_data.user_images_dir }}">{{ user_data.employee_images_dir }}</a>
-                <p class="text-danger">{{ errors.employee_images_dir }}</p>
+                <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput" name="employee_images_dir">
+                <label class="custom-file-label" for="myInput">Choose file</label>
+                <input type="hidden" name="file_employee_image">                                
+                {% comment %} <p class="text-danger">{{ errors.employee_images_dir }}</p> {% endcomment %}
             </div>
-        </div> {% endcomment %}
+        </div>
         <div class="form-group row">
             <div class="col-lg-3">
                 <label for="first_name" class="font-weight-bold">FingerPrint <span class="text-danger">*</span></label>

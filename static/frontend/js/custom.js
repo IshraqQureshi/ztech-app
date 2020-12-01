@@ -119,11 +119,17 @@ $(document).ready(function(){
                     if( response.employee_name )
                     {                        
                         if(response.employee_faceId)
-                        {
+                        {                            
                             $('#employee_name').text(response.employee_name);
                             $('#punch_time').text(response.punch_in);
                             $('#date').text(response.date);
                             $('#punch').text('Punch Out Time');
+                            let img = document.createElement('img');
+                            let image_dir = '/'+response.employee_image;
+                            img.setAttribute('src', image_dir);
+
+                            $('.employee_image').append(img);
+
                             if(response.punch_type)
                             {
                                 $('#punch').text('Punch In Time');

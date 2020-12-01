@@ -60,6 +60,7 @@ def finger(request):
     currentDate = date.today()
     employee_id = employees['id']
     employee_faceId = employees['face_id']
+    employee_image = employees['image_dir']
     employee_name = employees['first_name'] + ' ' + employees['last_name']
 
     save_attendance = Attendace()
@@ -80,6 +81,7 @@ def finger(request):
     response = {
         'employee_id': employee_id,
         'employee_name': employee_name,
+        'employee_image': employee_image,
         'employee_faceId': employee_faceId,
         'punch_in': currentTime.strftime('%H:%M %S'),
         'date': currentDate.strftime("%B %d, %Y"),

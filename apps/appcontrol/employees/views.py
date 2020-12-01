@@ -10,6 +10,7 @@ from django.utils.html import strip_tags
 import time
 import busio
 from digitalio import DigitalInOut, Direction
+from django.core.files.storage import FileSystemStorage
 import adafruit_fingerprint
 import serial
 import cv2
@@ -66,8 +67,15 @@ def add (request):
             plain_message = strip_tags(html_message) 
             from_email = settings.ADMIN_EMAIL
             to = request.POST.get('email')
+
+            employee_image = request.FILES['employee_images_dir']
+        
+            employee_images_dir = 'media/users/' + request.POST.get('first_name')
+            fileSystem = FileSystemStorage(location=employee_images_dir)
+            filename = fileSystem.save(employee_image.name, employee_image)
+            uploaded_file_url = employee_images_dir + '/' + filename
             
-            save(request)
+            save(request, employee_image=uploaded_file_url)
 
             send_mail(email_subject, plain_message, from_email, [to], html_message=html_message)
             data['success'] = 'Employee Added Successfully'
@@ -131,6 +139,9 @@ def save(request, employee_id= None, employee_image= None):
     save_employee.fingerprint_2 = request.POST.get('fingerprint_1')
     save_employee.face_id = request.POST.get('face_id')
     save_employee.status = request.POST.get('status')    
+
+    if employee_image is not None:
+        save_employee.image_dir = employee_image
 
     # print(request.POST)
     save_employee.save()            

@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class AppcontrolConfig(AppConfig):
-    name = 'appcontrol'
+    name = 'apps.appcontrol.dashboard'

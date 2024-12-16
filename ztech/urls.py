@@ -16,6 +16,6 @@ urlpatterns = [
     path('appcontrol/visitors/', include('apps.appcontrol.visitors.urls')),
     path('appcontrol/attendance/', include('apps.appcontrol.attendance.urls')),
 
-    path('frontend/', include('apps.frontend.fingerVerification.urls')),
+    path('frontend/', include('apps.frontend.faceVerification.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -23,8 +23,6 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(max_length=199, verbose_name='address')),
                 ('purpose', models.CharField(max_length=199, verbose_name='purpose')),
                 ('want_to', models.CharField(max_length=199, verbose_name='want_to')),
-                ('fingerprint_1', models.IntegerField(verbose_name='fingerprint_1')),
-                ('fingerprint_2', models.IntegerField(verbose_name='fingerprint_2')),
                 ('face_id', models.IntegerField(verbose_name='face_id')),
             ],
         ),

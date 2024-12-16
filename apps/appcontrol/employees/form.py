@@ -18,8 +18,6 @@ class EmployeeForm():
             self.designation = form_data.get('designation')
             self.department_id = form_data.get('department_id')
             self.image_dir = form_data.get('image_dir')
-            self.fingerprint_1 = form_data.get('fingerprint_1')
-            self.fingerprint_2 = form_data.get('fingerprint_2')
             self.face_id = form_data.get('face_id')
             self.status = form_data.get('designation')
             
@@ -68,10 +66,7 @@ class EmployeeForm():
             self.error['department_id'] = 'Department is requird'                
         
         if self.image_dir == '' and edit == False:
-            self.error['image_dir'] = 'Employee Images is required'
-
-        if self.fingerprint_1 == '':
-            self.error['fingerprint_1'] = 'Fingerprint is required'        
+            self.error['image_dir'] = 'Employee Images is required'   
         
         if self.face_id == '':
             self.error['face_id'] = 'Face is required'        

@@ -16,9 +16,7 @@ class VisitorForm():
             self.phone_number = form_data.get('phone_number')
             self.address = form_data.get('address')
             self.purpose = form_data.get('purpose')
-            self.want_to = form_data.get('want_to')            
-            self.fingerprint_1 = form_data.get('fingerprint_1')
-            self.fingerprint_2 = form_data.get('fingerprint_2')
+            self.want_to = form_data.get('want_to')
             self.face_id = form_data.get('face_id')
             
             
@@ -65,9 +63,6 @@ class VisitorForm():
 
         if self.want_to == '':
             self.error['want_to'] = 'Whom you want to is requird'                
-                
-        if self.fingerprint_1 == '':
-            self.error['fingerprint_1'] = 'Fingerprint is required'        
         
         if self.face_id == '':
             self.error['face_id'] = 'Face is required'        

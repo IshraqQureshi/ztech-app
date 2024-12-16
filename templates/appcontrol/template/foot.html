@@ -1,16 +1,17 @@
+{% load static %}
 <!-- Bootstrap core JavaScript-->
-<script src="{{ APPCONTROL_STATIC_ROOT }}vendor/jquery/jquery.min.js"></script>
-<script src="{{ APPCONTROL_STATIC_ROOT }}vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'appcontrol/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'appcontrol/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{{ APPCONTROL_STATIC_ROOT }}vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="{{ APPCONTROL_STATIC_ROOT }}vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="{{ APPCONTROL_STATIC_ROOT }}vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="{% static 'appcontrol/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'appcontrol/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'appcontrol/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="{{ APPCONTROL_STATIC_ROOT }}js/sb-admin-2.min.js"></script>
-<script src="{{ APPCONTROL_STATIC_ROOT }}js/ajax.js"></script>
-<script src="{{ APPCONTROL_STATIC_ROOT }}js/custom.js"></script>
+<script src="{% static 'appcontrol/js/sb-admin-2.min.js' %}"></script>
+<script src="{% static 'appcontrol/js/ajax.js' %}"></script>
+<script src="{% static 'appcontrol/js/custom.js' %}"></script>
 
 </body>
 </html>

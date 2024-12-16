@@ -8,11 +8,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import time
-import busio
-from digitalio import DigitalInOut, Direction
 from django.core.files.storage import FileSystemStorage
-import adafruit_fingerprint
-import serial
 import cv2
 import numpy as np
 
@@ -135,8 +131,6 @@ def save(request, employee_id= None, employee_image= None):
     save_employee.address = request.POST.get('address')
     save_employee.designation = request.POST.get('designation')
     save_employee.department_id = request.POST.get('department_id')
-    save_employee.fingerprint_1 = request.POST.get('fingerprint_1')
-    save_employee.fingerprint_2 = request.POST.get('fingerprint_1')
     save_employee.face_id = request.POST.get('face_id')
     save_employee.status = request.POST.get('status')    
 
@@ -153,91 +147,6 @@ def delete(request, employee_id):
     employee_data.delete()
 
     return redirect('/appcontrol/employees/manage')
-
-@csrf_exempt
-def ajax_fingerprint(request):    
-    
-    
-    for i in range(1, 127):                
-        checkfingerprint = models.Employees.objects.filter(fingerprint_1=i).values()
-        if checkfingerprint.exists() == False:
-            fingerprint_id = i
-            break
-            
-    enroll_finger(request, fingerprint_id)
-
-    response = {'fingerprint_id': fingerprint_id}
-    return JsonResponse(response)
-
-def enroll_finger(request, location):
-    
-    uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
-    finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
-
-    
-    print("Place finger on sensor...", end="", flush=True)    
-
-    while True:
-        i = finger.get_image()
-        if i == adafruit_fingerprint.OK:
-            print("Image taken")
-            break
-        if i == adafruit_fingerprint.NOFINGER:
-            print(".", end="", flush=True)
-        elif i == adafruit_fingerprint.IMAGEFAIL:
-            print("Imaging error")
-            return False
-        else:
-            print("Other error")
-            return False
-
-    print("Templating...", end="", flush=True)
-    i = finger.image_2_tz(1)
-    if i == adafruit_fingerprint.OK:
-        print("Templated")
-    else:
-        if i == adafruit_fingerprint.IMAGEMESS:
-            print("Image too messy")
-        elif i == adafruit_fingerprint.FEATUREFAIL:
-            print("Could not identify features")
-        elif i == adafruit_fingerprint.INVALIDIMAGE:
-            print("Image invalid")
-        else:
-            print("Other error")
-        return False
-
-    
-    print("Remove finger")
-    time.sleep(1)
-    while i != adafruit_fingerprint.NOFINGER:
-        i = finger.get_image()
-
-    print("Creating model...", end="", flush=True)
-    i = finger.create_model()
-    print(adafruit_fingerprint.OK)
-    if i == adafruit_fingerprint.OK:
-        print("Created")
-    else:
-        if i == adafruit_fingerprint.ENROLLMISMATCH:
-            print("Prints did not match")
-        else:
-            print("Other error")
-            return False
-
-    print("Storing model #%d..." % location, end="", flush=True)
-    i = finger.store_model(location)
-    if i == adafruit_fingerprint.OK:
-        print("Stored")
-    else:
-        if i == adafruit_fingerprint.BADLOCATION:
-            print("Bad storage location")
-        elif i == adafruit_fingerprint.FLASHERR:
-            print("Flash storage error")
-        else:
-            print("Other error")
-        return False
-
-    return True
 
 @csrf_exempt
 def ajax_face(request):

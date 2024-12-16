@@ -24,8 +24,6 @@ class Migration(migrations.Migration):
                 ('designation', models.CharField(max_length=199, verbose_name='designation')),
                 ('department_id', models.IntegerField(verbose_name='department_id')),
                 ('image_dir', models.CharField(max_length=256, verbose_name='image_dir')),
-                ('fingerprint_1', models.IntegerField(verbose_name='fingerprint_1')),
-                ('fingerprint_2', models.IntegerField(verbose_name='fingerprint_2')),
                 ('status', models.BooleanField(verbose_name='status')),
             ],
         ),

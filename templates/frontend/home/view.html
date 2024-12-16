@@ -1,4 +1,5 @@
 {% extends '../templates/template.html' %}
+{% load static %}
 
 {% block content %}
     <!-- WELCOME SECTION -->
@@ -6,7 +7,7 @@
         <div class="container vh-100 flex v-center h-center">
             <div class="content vw-75 vh-50 m-auto flex v-center h-center flex-column text-center">
                 <h3 class="font-1_6 m-10 animate-top">Welcome To</h3>
-                <h1 class="font-4 m-10 animate-bottom">Face Recognition and Bio-metric Authentication System</h1>
+                <h1 class="font-4 m-10 animate-bottom">Face Recognition Authentication System</h1>
                 {% comment %} <a href="#" class="btn start-btn animate-left">Start</a> {% endcomment %}
             </div>
         </div>
@@ -20,14 +21,14 @@
             <div class="who_you_are_wrapper">
                 <div class="choose_option employee_option animate-left">
                     <a href="javascript:void(0)" class="employee-btn animate-left">
-                        <img src="{{ FRONTEND_STATIC_ROOT }}/images/employee.png" alt="Employee">
+                        <img src="{% static 'frontend/images/employee.png' %}" alt="Employee">
                         <h4>Employee</h4>
                     </a>
                 </div>
                 <div class="choose_option_divider animate-bottom"></div>
                 <div class="choose_option visitor_option animate-right">
                     <a href="javascript:void(0)" class="visitor-btn">
-                        <img src="{{FRONTEND_STATIC_ROOT}}/images/visitor.png" alt="Employee">
+                        <img src="{% static 'frontend/images/visitor.png' %}" alt="Employee">
                         <h4>Visitor</h4>
                     </a>
                 </div>
@@ -47,28 +48,11 @@
                 </div>
             </div>
             <div class="face_recog_img">
-                <img src="{{FRONTEND_STATIC_ROOT}}/images/face-recog.gif" alt="Face Recognition">
+                <img src="{% static 'frontend/images/face-recog.gif' %}" alt="Face Recognition">
             </div>
         </div>
     </section>
     <!-- FACE RECOGNITION SECTION -->
-
-    <!-- FINGER PRINT VERIFICATION SECTION -->
-    <section class="vh-100 section finger-print w-100" >
-        <div class="container vh-100 flex v-center w-100">
-            <div class="finger_recog_content">
-                <h2 class="font-3">Bio-Metric Authentication</h2>
-                <div class="btn_wrapper">
-                    <a href="javascript:void(0)" class="finger-btn animate-left">Authenticate</a>
-                    <a href="javascript:void(0)" class="back_btn animate-left">Go Back</a>
-                </div>
-            </div>
-            <div class="finger_recog_img">
-                <img src="{{FRONTEND_STATIC_ROOT}}/images/finger-recog.gif" alt="Finger Recognition">
-            </div>
-        </div>
-    </section>
-    <!-- FINGER VERIFICATION SECTION -->
 
     <!-- EMPLOYEE ATTENDANCE SECTION -->
     <section class="vh-100 section employee_details w-100">
@@ -95,27 +79,11 @@
                 </div>
             </div>
             <div class="face_recog_img">
-                <img src="{{FRONTEND_STATIC_ROOT}}/images/face-recog.gif" alt="Face Recognition">
+                <img src="{% static 'frontend/images/face-recog.gif' %}" alt="Face Recognition">
             </div>
         </div>        
     </section>
     <!-- VISITOR FACE CAPTURE SECTION -->
-
-    <!-- VISITOR FINGER PRINT VERIFICATION SECTION -->
-    <section class="vh-100 section finger-capture w-100" >
-        <div class="container vh-100 flex v-center w-100">
-            <div class="finger_recog_content">
-                <h2 class="font-3">Bio-Metric Authentication</h2>
-                <div class="btn_wrapper">
-                    <a href="javascript:void(0)" class="btn finger-capture-btn animate-left">Capture</a>
-                    <a href="javascript:void(0)" class="back_btn animate-left">Go Back</a>
-                </div>
-            </div>
-            <div class="finger_recog_img">
-                <img src="{{FRONTEND_STATIC_ROOT}}/images/finger-recog.gif" alt="Finger Recognition">
-            </div>
-        </div>
-    </section>
 
     <section class="vh-100 section visitor-form w-100" >
         <div class="container vh-100 flex h-start">
@@ -149,8 +117,8 @@
                         <div class="form_field">
                             <label>Whom Want To Meet?</label>
                             <select name="want_to">
-                                <option value="1">Ishraq</option>
-                                <option value="2">Ismail</option>                                
+                                <option value="1">Salman</option>
+                                <option value="2">Ishraq</option>                                
                             </select>
                         </div>
                     </div>
@@ -165,8 +133,6 @@
                         </div>
                     </div>
                     <div class="submit_row">
-                        <input type="hidden" name="fingerprint_1" value="0">
-                        <input type="hidden" name="fingerprint_2" value="0">
                         <input type="hidden" name="face_id" value="0">
                         <div class="submit_field">
                             <input type="submit" name="submit">
@@ -177,19 +143,5 @@
             <div class="visitor_Form_img"></div>
         </div>
     </section>
-
-    <!-- FINGER AUTHENTICATIO POPUP SECTION -->
-    <div class="popUp fingerPrintVerification">
-        <div class="popUpOverlay"></div>
-        <div class="popUpWrapper">
-            <div class="popUpImage">
-                <img src="{{ APPCONTROL_STATIC_ROOT }}images/fingerprint.gif" alt="Finger Print">
-            </div>
-            <div class="popUpContent">
-                <h3>Place Your Finger To Authenticate!!</h3>
-            </div>
-        </div>
-    </div>
-    <!-- FINGER AUTHENTICATION SECTION -->
 
 {% endblock %}

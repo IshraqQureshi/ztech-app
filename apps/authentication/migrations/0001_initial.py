@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
                 ('user_name', models.CharField(max_length=100, verbose_name='user_name')),
                 ('password', models.CharField(max_length=100, verbose_name='password')),
                 ('user_images_dir', models.CharField(max_length=200, verbose_name='user_images_dir')),
-                ('finger_print_id', models.CharField(max_length=100, verbose_name='finger_print_id')),
                 ('status', models.BooleanField(verbose_name='status')),
                 ('forget_password_token', models.CharField(max_length=256, verbose_name='forget_password_token')),
                 ('created_at', models.DateTimeField(verbose_name='create_at')),

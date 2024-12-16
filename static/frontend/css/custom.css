@@ -120,11 +120,9 @@ img{max-width: 100%;}
 .welcome.section .content h3{position: relative;}
 .welcome.section .content h1{text-shadow: 0px -6px 0px #fff, 0px 6px 0 #fff, 0 0 0 #fff;color: #3d2149;position: relative;}
 
-section.finger-print{position: absolute;left: -100vw;background: #fff }
 section.face_recog{position: absolute;left: -100vw;background: #fff}
 section.who_you_are{position: absolute;left: -100vw;background: #fff url('../images/who-u-r-bg.jpg') no-repeat bottom right / cover;}
 section.face_capture{position: absolute;left: -100vw;background: #fff}
-section.finger-capture{position: absolute;left: -100vw;background: #fff;z-index: 99999;}
 
 section.employee_details{position: absolute;right: -100vw;background: url('../images/punch.jpg') no-repeat center / cover;}
 section.visitor-form{position: absolute;left: -100vw;background: #e8e8e8;z-index: 999999;}
@@ -214,32 +212,6 @@ section.visitor-form{position: absolute;left: -100vw;background: #e8e8e8;z-index
     
 }
 
-.finger-capture.section .animate-top{
-    transform: translateY(0);
-    animation-name: slideTop;
-    animation-duration: 1.5s;
-    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
-    animation-delay: 5.3s;
-}
-
-.finger-capture.section .animate-bottom{
-    transform: translateY(0);
-    animation-name: slideBottom;
-    animation-duration: 2s;
-    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
-    animation-delay: 5.3s;
-}
-
-.finger-capture.section .animate-left{
-    transform: translateX(0);
-    transition: 2s ease all;
-    animation-name: slideLeft;
-    animation-duration: 2.5s;
-    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
-    animation-delay: 5.3s;
-    
-}
-
 .face_capture.section .animate-top{
     transform: translateY(0);
     animation-name: slideTop;
@@ -299,32 +271,6 @@ section.visitor-form{position: absolute;left: -100vw;background: #e8e8e8;z-index
     animation-duration: 2.5s;
     animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
     animation-delay: 7.5s;
-    
-}
-
-.finger-print.section .animate-top{
-    transform: translateY(0);
-    animation-name: slideTop;
-    animation-duration: 1.5s;
-    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);
-    animation-delay: 5.3s;
-}
-
-.finger-print.section .animate-bottom{
-    transform: translateY(0);
-    animation-name: slideBottom;
-    animation-duration: 2s;
-    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);        
-    animation-delay: 5.3s;
-}
-
-.finger-print.section .animate-left{
-    transform: translateX(0);
-    transition: 2s ease all;
-    animation-name: slideLeft;
-    animation-duration: 2.5s;
-    animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.45);    
-    animation-delay: 5.3s;
     
 }
 
@@ -509,46 +455,6 @@ section.visitor-form{position: absolute;left: -100vw;background: #e8e8e8;z-index
 
 .btn_wrapper a {padding: 12px 40px;background: #000;font-size: 18px;text-decoration: none;color: #fff;font-weight: 700;margin: 0 15px;}
 
-
-#page-top .finger_recog_content{
-    left: auto;
-    right: 60px;
-    transform: scaleX(-1) skewX(10deg);
-    z-index: 99999;
-    width: 45%;
-    position: absolute;
-    top: -100vh;
-    bottom: 0;
-    height: 100%;
-    background: #fff url(../images/pattern-bg.jpg) no-repeat bottom / cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 0 40px;        
-    flex-direction: column;
-    transition: 1s cubic-bezier(0.6, -0.28, 0.735, 0.45) top;
-}
-
-#page-top .finger_recog_img {
-    right: auto;
-    left: 0;
-    z-index: 9999;
-    width: 55%;
-    position: absolute;    
-    top: 100vh;
-    bottom: 0;
-    height: 100%;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 1s cubic-bezier(0.6, -0.28, 0.735, 0.45) top;
-}
-
-.finger_recog_content h2, .finger_recog_content .btn_wrapper{
-    transform: scaleX(-1) skewX(10deg);
-}
 
 .visitor_Form_img {
     width: 50%;

@@ -8,8 +8,6 @@ class Visitors(models.Model):
     phone_number = models.CharField('phone_number', max_length=199)
     address = models.CharField('address', max_length=199)
     purpose = models.CharField('purpose', max_length=199)
-    want_to = models.IntegerField('want_to')    
-    fingerprint_1 = models.IntegerField('fingerprint_1')
-    fingerprint_2 = models.IntegerField('fingerprint_2')
+    want_to = models.IntegerField('want_to')
     face_id = models.IntegerField('face_id', default=0)
     

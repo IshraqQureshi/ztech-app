@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='employees',
             name='face_id',
-            field=models.IntegerField(default='null', verbose_name='face_id'),
+            field=models.IntegerField(default=0, verbose_name='face_id'),
         ),
     ]

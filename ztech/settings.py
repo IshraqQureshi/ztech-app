@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'apps.appcontrol.visitors',
     'apps.appcontrol.attendance',
 
-    'apps.frontend.fingerVerification',
+    'apps.frontend.faceVerification',
     'ztech',    
 ]
 
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'ztech.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3.db'),
     }
 }
 
@@ -130,15 +130,12 @@ STATICFILES_DIRS = [
 ]
 
 # General Static files (CSS, JavaScript, Images)
-GENERAL_STATIC_URL = '/static/general/'
 GENERAL_STATIC_ROOT = os.path.join(BASE_DIR, '/static/general/')
 
 # Appcontrol Static files (CSS, JavaScript, Images)
-APPCONTROL_STATIC_URL = '/static/appcontrol/'
 APPCONTROL_STATIC_ROOT = os.path.join(BASE_DIR, '/static/appcontrol/')
 
 # Frontend Static files (CSS, JavaScript, Images)
-FRONTEND_STATIC_URL = '/static/frontend/'
 FRONTEND_STATIC_ROOT = os.path.join(BASE_DIR, '/static/frontend/')
 
 # Media files

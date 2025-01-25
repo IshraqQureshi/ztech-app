@@ -77,15 +77,41 @@ $(document).ready(function(){
                 type: 'GET',        
                 success: function(response){
                     if(response.status){
-                        employee_id = response.employee_id
-                        
+                        employee = response.employee
+                        face_verify = 0;
+
                         $('.face_recog').animate({
-                            left: '-100vw',
+                            left: '100vw',
+                        }, 200, () => {});
+
+                        $('.employee_details').animate({
+                            left: '0vw',
                         }, 1000, () => {
+                            
 
-                          
+                            
+                            $.ajax({
+                                type: 'POST',
+                                url: '/frontend/mark_attendance/',
+                                data: {
+                                    id: employee.id
+                                },
+                                success: function(res) {
+                                    if(res.status){
+                                        const employee_image = $('img').attr('src',`/${employee.image_dir}`)
+                                        $('.employee_image').append(employee_image)
+                                        $('#employee_name').text(employee.first_name + ' ' + employee.last_name)
+                                        $('#punch').text(res.message)
+                                        $('#punch_time').text(response.punch_time)
+                                        $('#date').text(response.date)
+                                        
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 5000);
+                                    }
+                                }
+                            })
                         });
-
                     }else{
                         face_verify = face_verify + 1;
                     }

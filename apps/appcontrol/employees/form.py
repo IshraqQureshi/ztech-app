@@ -9,6 +9,7 @@ class EmployeeForm():
         if form_data is not None:
             
             self.error = {}
+            self.employee_id = form_data.get('employee_id')
             self.first_name = form_data.get('first_name')
             self.last_name = form_data.get('last_name')
             self.email = form_data.get('email')
@@ -25,6 +26,9 @@ class EmployeeForm():
                 
         if self.first_name == '':
             self.error['first_name'] = 'First Name is requird'
+                
+        if self.employee_id == '':
+            self.error['employee_id'] = 'Employee ID is requird'
         
         elif self.nameValidation(self.first_name):
             self.error['first_name'] = 'Only alphabets are required'

@@ -99,7 +99,7 @@ class VisitorForm():
 
     def uniqueUserEmail(self, value):
 
-        check_user = models.Employees.objects.filter(email=value).values()        
+        check_user = models.Visitors.objects.filter(email=value).values()        
 
         if check_user.exists():
             return True

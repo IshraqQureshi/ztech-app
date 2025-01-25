@@ -83,13 +83,19 @@
         </a>
     </li>
 
-    <!-- Nav Item - Charts -->
+    <!-- Divider -->
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'train_employees' %}">
-          <i class="fa fa-cogs" aria-hidden="true"></i>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTain" aria-expanded="true" aria-controls="collapseTain">
+          <i class="fa fa-users" aria-hidden="true"></i>
           <span>Train Dataset</span>
         </a>
-    </li>      
+        <div id="collapseTain" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">            
+                <a class="collapse-item" href="{% url 'train_employees' %}">Train Employees Data</a>                
+                <a class="collapse-item" href="{% url 'train_visitors' %}">Train Visitors Data</a>                
+            </div>
+        </div>
+    </li>
     
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline collapse_btn">

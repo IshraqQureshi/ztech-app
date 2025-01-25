@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
 from django.core.mail import send_mail
+from django.template.defaulttags import now
 from django.template.loader import render_to_string
+from django.forms.models import model_to_dict
 from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
-import time
 from apps.appcontrol.employees.models import Employees
 from apps.appcontrol.visitors.models import Visitors
 from apps.appcontrol.attendance.models import Attendace
@@ -25,47 +26,54 @@ def index(request):
 
 @csrf_exempt
 def face(request):
+    import cv2
+    import numpy as np
+
     faceDetect = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_default.xml')
     cam = cv2.VideoCapture(0)
-    
+
     if not cam.isOpened():
         return JsonResponse({'status': False, 'error': 'Camera not accessible'})
 
-    # creating recognizer
-    rec = cv2.face.LBPHFaceRecognizer_create()
-    # loading the training data
-    rec.read(settings.BASE_DIR + '/ml/recognizer/trainingData.yml')
-    getId = 0
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
+    recognizer.read(settings.BASE_DIR + '/ml/recognizer/trainingData.yml')
+
     font = cv2.FONT_HERSHEY_SIMPLEX
-    userId = 0
 
     while True:
         ret, img = cam.read()
         if not ret:
             print("Failed to capture image")
-            continue  # Skip processing if frame capture fails
+            continue
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = faceDetect.detectMultiScale(gray, 1.3, 5)
+        faces = faceDetect.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+
+        employee = None
         for (x, y, w, h) in faces:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-            getId, conf = rec.predict(gray[y:y + h, x:x + w])  # This will predict the id of the face
+            face_region = gray[y:y + h, x:x + w]
+            face_resized = cv2.resize(face_region, (150, 150))
 
-            if conf < 35:
-                userId = getId
-                cv2.putText(img, "Detected", (x, y + h), font, 2, (0, 255, 0), 2)
+            predicted_id, conf = recognizer.predict(face_resized)
+
+            if conf < 50:
+                employee = Employees.objects.get(face_id=predicted_id)
+                cv2.putText(img, f"{employee.first_name} {employee.last_name}", (x, y - 25), font, 0.5, (0, 255, 0), 2)
+                cv2.putText(img, f"{employee.employee_id}", (x, y - 10), font, 0.5, (0, 255, 0), 2)
             else:
-                cv2.putText(img, "Unknown", (x, y + h), font, 2, (0, 0, 255), 2)
+                cv2.putText(img, "Unknown", (x, y - 10), font, 0.8, (0, 0, 255), 2)
 
         cv2.imshow("Face", img)
-        if cv2.waitKey(1) == ord('q'):
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        elif userId != 0:
+        elif employee is not None:
             cam.release()
             cv2.destroyAllWindows()
-            return JsonResponse({'status': True, 'employee_id': userId})
-    
+            return JsonResponse({'status': True, 'employee': model_to_dict(employee), 'punch_time': datetime.now().strftime('%H:%M:%S'), 'date': datetime.now().strftime('%Y-%m-%d')})
+
     cam.release()
     cv2.destroyAllWindows()
     return JsonResponse({'status': False})
@@ -75,9 +83,7 @@ def capture(request):
     faceDetect = cv2.CascadeClassifier(settings.BASE_DIR+'/ml/haarcascade_frontalface_default.xml')
 
     cam = cv2.VideoCapture(0)
-    # creating recognizer
     rec = cv2.face.LBPHFaceRecognizer_create()
-    # loading the training data
     rec.read(settings.BASE_DIR+'/ml/frontend-recognizer/trainingData.yml')
     getId = 0
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -88,30 +94,29 @@ def capture(request):
         ret, img = cam.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = faceDetect.detectMultiScale(gray, 1.3, 5)
-        for(x,y,w,h) in faces:
-            cv2.rectangle(img,(x,y),(x+w,y+h), (0,255,0), 2)
+        for (x, y, w, h) in faces:
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-            getId,conf = rec.predict(gray[y:y+h, x:x+w]) #This will predict the id of the face
+            face_region = gray[y:y + h, x:x + w]
+            face_resized = cv2.resize(face_region, (150, 150))
 
-            #print conf;
-            if conf<35:
-                userId = getId
-                cv2.putText(img, "Detected",(x,y+h), font, 2, (0,255,0),2)
+            predicted_id, conf = rec.predict(face_resized)
+
+            if conf < 40:
+                userId = predicted_id
+                cv2.putText(img, f"ID: {predicted_id} ({conf:.2f})", (x, y - 10), font, 0.8, (0, 255, 0), 2)
             else:
-                cv2.putText(img, "Unknown",(x,y+h), font, 2, (0,0,255),2)
+                cv2.putText(img, "Unknown", (x, y - 10), font, 0.8, (0, 0, 255), 2)
                 visitor = False
 
+        cv2.imshow("Face", img)
 
-            # Printing that number below the face
-            # @Prams cam image, id, location,font style, color, stroke
-
-        cv2.imshow("Face",img)        
-        if(cv2.waitKey(1) == ord('q')):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        elif(userId != 0):    
+        elif userId != 0:
             cam.release()
-            cv2.destroyAllWindows()                    
-            return JsonResponse({'status': True, 'visitor_id': userId})    
+            cv2.destroyAllWindows()
+            return JsonResponse({'status': True, 'visitor_id': userId})  
         elif(visitor):
             cam.release()
             cv2.destroyAllWindows()
@@ -123,9 +128,12 @@ def capture(request):
     return JsonResponse({'status': False})
     
 def save_face():
-
-    visitor_count = Visitors.objects.latest('id')
-    userId = visitor_count.id + 1  
+    userId = 0
+    if Visitors.objects.exists():
+        visitor_count = Visitors.objects.latest('id')
+        userId = visitor_count.id + 1
+    else:
+        userId = 1
     
     faceDetect = cv2.CascadeClassifier(settings.BASE_DIR+'/ml/haarcascade_frontalface_default.xml')
     cam = cv2.VideoCapture(0)
@@ -192,4 +200,33 @@ def store_visitor(request):
     }
 
     return render(request, data['template_folder'] + '/' + data['template_file'], data)
+
+@csrf_exempt
+def mark_attendance(request):    
+    id = request.POST.get('id')
+
+    if not id:
+        return JsonResponse({'status': False, 'error': 'Employee ID is required'})
+
+    try:
+        id = int(id)
+    except ValueError:
+        return JsonResponse({'status': False, 'error': 'Invalid Employee ID'})
+
+    latest_record = Attendace.objects.filter(id=id).order_by('-punch_in').first()
+
+    if latest_record and not latest_record.punch_out == None:
+        latest_record.punch_out = datetime.now().strftime('%H:%M:%S')
+        latest_record.save()
+        status = "Punched Out"
+    else:
+        Attendace.objects.create(
+            employee_id=id,
+            punch_in=datetime.now().strftime('%H:%M:%S'),
+            punch_out=None,
+            date=date.today()
+        )
+        status = "Punched In"
+
+    return JsonResponse({'status': True, 'message': f'{status} successfully', 'id': id})
 

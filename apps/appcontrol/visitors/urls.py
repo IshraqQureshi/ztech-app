@@ -7,5 +7,5 @@ urlpatterns = [
     path('ajax_register_face/', views.ajax_face, name='register_face'),
     path('edit/<int:visitor_id>', views.edit, name='edit_visitor'),
     path('delete/<int:visitor_id>', views.delete, name='delete_visitor'),
-    path('train/', views.train_ml, name='train')
+    path('train/', views.train_ml, name='train_visitors')
 ]

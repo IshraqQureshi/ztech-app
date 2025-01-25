@@ -10,6 +10,8 @@ from django.utils.html import strip_tags
 import time
 import cv2
 import numpy as np
+import os
+from PIL import Image
 
 def index(request):
     if request.session.get('user') is None:
@@ -115,15 +117,15 @@ def save(request, visitor_id= None, visitor_image= None):
     if visitor_id is not None:
         save_visitor = models.Visitors.objects.get(id=visitor_id)
     
-    save_visitor.first_name = request.GET.get('first_name')
-    save_visitor.last_name = request.GET.get('last_name')
-    save_visitor.email = request.GET.get('email')
-    save_visitor.nic_number = request.GET.get('nic_number')
-    save_visitor.phone_number = request.GET.get('phone_number')
-    save_visitor.address = request.GET.get('address')
-    save_visitor.purpose = request.GET.get('purpose')
-    save_visitor.want_to = request.GET.get('want_to')
-    save_visitor.face_id = request.GET.get('face_id')    
+    save_visitor.first_name = request.POST.get('first_name')
+    save_visitor.last_name = request.POST.get('last_name')
+    save_visitor.email = request.POST.get('email')
+    save_visitor.nic_number = request.POST.get('nic_number')
+    save_visitor.phone_number = request.POST.get('phone_number')
+    save_visitor.address = request.POST.get('address')
+    save_visitor.purpose = request.POST.get('purpose')
+    save_visitor.want_to = request.POST.get('want_to')
+    save_visitor.face_id = request.POST.get('face_id')    
 
     # print(request.POST)
     save_visitor.save()            
@@ -134,93 +136,101 @@ def delete(request, visitor_id):
 
     visitor_data.delete()
 
-    return redirect('/appcontrol/visitor/manage')
+    return redirect('/appcontrol/visitors/manage')
 
 @csrf_exempt
 def ajax_face(request):
-    
-    face_id = request.POST['face_id']
-    
-    if int(face_id) == 0:
-        visitor_count = models.Visitors.objects.latest('id')
-        userId = visitor_count.id + 1        
-    else:
-        userId = face_id    
+    face_id = int(request.POST['face_id'])
 
-    faceDetect = cv2.CascadeClassifier(settings.BASE_DIR+'/ml/haarcascade_frontalface_default.xml')
+    if face_id == 0:
+        if models.Visitors.objects.exists():
+            visitor_count = models.Visitors.objects.latest('id')
+            user_id = visitor_count.id + 1
+        else:
+            user_id = 1
+    else:
+        user_id = face_id
+
+    face_cascade = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_default.xml')
+
     cam = cv2.VideoCapture(0)
 
-    id = userId
+    if not cam.isOpened():
+        return JsonResponse({'status': False, 'error': 'Camera not accessible'})
 
-    sampleNum = 0
+    sample_num = 0
+    dataset_path = os.path.join(settings.BASE_DIR, 'ml', 'frontend-dataset')
 
-    while(True):
-        ret, img = cam.read()
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = faceDetect.detectMultiScale(gray, 1.3, 5)
-        for(x,y,w,h) in faces:
-            sampleNum = sampleNum+1
-            cv2.imwrite(settings.BASE_DIR+'/ml/frontend-dataset/user.'+str(id)+'.'+str(sampleNum)+'.jpg', gray[y:y+h,x:x+w])
-            cv2.rectangle(img,(x,y),(x+w,y+h), (0,255,0), 2)
+    os.makedirs(dataset_path, exist_ok=True)
+
+    while True:
+        ret, frame = cam.read()
+        if not ret:
+            print("Failed to capture image")
+            continue
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+
+        for (x, y, w, h) in faces:
+            face = gray[y:y+h, x:x+w]
+            face_resized = cv2.resize(face, (150, 150)) 
+
+            file_name = f"visitor.{user_id}.{sample_num}.jpg"
+            cv2.imwrite(os.path.join(dataset_path, file_name), face_resized)
+            sample_num += 1
+
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             cv2.waitKey(250)
-        cv2.imshow("Face",img)
-        cv2.waitKey(1)
-        if(sampleNum>35):
-            break
-    cam.release()
-    cv2.destroyAllWindows()    
 
-    response = {'face_id': userId}
+        cv2.imshow("Capturing Faces", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q') or sample_num >= 35:
+            break
+
+    cam.release()
+    cv2.destroyAllWindows()
+
+    response = {'status': True, 'face_id': user_id}
     return JsonResponse(response)
 
 def train_ml(request):
-    import os
-    from PIL import Image
-
-    #Creating a recognizer to train
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    #Path of the samples
-    path = settings.BASE_DIR+'/ml/frontend-dataset'
 
-    # To get all the images, we need corresponing id
+    dataset_path = settings.BASE_DIR + '/ml/frontend-dataset'
+
     def getImagesWithID(path):
-        # create a list for the path for all the images that is available in the folder
-        # from the path(dataset folder) this is listing all the directories and it is fetching the directories from each and every pictures
-        # And putting them in 'f' and join method is appending the f(file name) to the path with the '/'
-        imagePaths = [os.path.join(path,f) for f in os.listdir(path)] #concatinate the path with the image name
-        #print imagePaths        
-        # Now, we loop all the images and store that userid and the face with different image list
+        import glob
+
+        imagePaths = [os.path.join(path,f) for f in os.listdir(path)] 
         faces = []
         Ids = []
+
         for imagePath in imagePaths:
-            # First we have to open the image then we have to convert it into numpy array
-            faceImg = Image.open(imagePath).convert('L') #convert it to grayscale
-            # converting the PIL image to numpy array
-            # @params takes image and convertion format
-            faceNp = np.array(faceImg, 'uint8')
-            # Now we need to get the user id, which we can get from the name of the picture
-            # for this we have to slit the path() i.e dataset/user.1.7.jpg with path splitter and then get the second part only i.e. user.1.7.jpg
-            # Then we split the second part with . splitter
-            # Initially in string format so hance have to convert into int format            
-            ID = int(os.path.split(imagePath)[-1].split('.')[1]) # -1 so that it will count from backwards and slipt the second index of the '.' Hence id
-            # Images
-            faces.append(faceNp)
-            # Label
-            Ids.append(ID)
-            #print ID
+
+            try:
+                faceImg = Image.open(imagePath).convert('L')
+                faceImg = faceImg.resize((150, 150))
+                faceNp = np.array(faceImg, 'uint8')
+
+                ID = int(os.path.split(imagePath)[-1].split('.')[1])
+
+                faces.append(faceNp)
+                Ids.append(ID)
+            except Exception as e:
+                print(f"Error processing file {imagePath}: {e}")
+
             cv2.imshow("training", faceNp)
             cv2.waitKey(10)
-        return np.array(Ids), np.array(faces)
+        return np.array(Ids), faces
 
-    # Fetching ids and faces
-    ids, faces = getImagesWithID(path)
+    ids, faces = getImagesWithID(dataset_path)
 
-    #Training the recognizer
-    # For that we need face samples and corresponding labels
+    if len(ids) == 0 or len(faces) == 0:
+        return JsonResponse({'status': False, 'error': 'No valid training data found'})
+
     recognizer.train(faces, ids)
 
-    # Save the recogzier state so that we can access it later
-    recognizer.save(settings.BASE_DIR+'/ml/frontend-recognizer/trainingData.yml')
-    cv2.destroyAllWindows()
+    recognizer.save(settings.BASE_DIR + '/ml/frontend-recognizer/trainingData.yml')
 
+    cv2.destroyAllWindows()
     return redirect('/')

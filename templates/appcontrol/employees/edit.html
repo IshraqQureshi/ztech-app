@@ -9,6 +9,15 @@
         {% csrf_token %}
         <div class="form-group row">
             <div class="col-lg-3">
+                <label for="employee_id" class="font-weight-bold">Employee ID <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Enter Employee ID" name="employee_id" value="{{ employee_data.employee_id }}">
+                <p class="text-danger">{{ errors.employee_id }}</p>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
                 <label for="first_name" class="font-weight-bold">First Name <span class="text-danger">*</span></label>
             </div>
             <div class="col-lg-4">

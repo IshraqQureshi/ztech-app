@@ -10,14 +10,16 @@
             <tr>
               <th>Employee Name</th>
               <th>Date</th>
-              <th>Time</th>              
+              <th>Punch In</th>   
+              <th>Punch Out</th>           
             </tr>
           </thead>
           <tfoot>
             <tr>
               <th>Employee Name</th>
               <th>Date</th>
-              <th>Time</th>
+              <th>Punch In</th> 
+              <th>Punch Out</th>
             </tr>
           </tfoot>
           <tbody>          
@@ -31,6 +33,7 @@
                       {% endfor %}
                       <td>{{ attend.date }}</td>
                       <td>{{ attend.punch_in }}</td>                      
+                      <td>{{ attend.punch_out }}</td>                      
                   </tr>                
               {% endfor %}
           </tbody>

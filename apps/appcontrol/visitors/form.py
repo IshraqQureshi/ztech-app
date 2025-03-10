@@ -17,7 +17,6 @@ class VisitorForm():
             self.address = form_data.get('address')
             self.purpose = form_data.get('purpose')
             self.want_to = form_data.get('want_to')
-            self.face_id = form_data.get('face_id')
             
             
     def validate(self, edit= False):
@@ -63,9 +62,7 @@ class VisitorForm():
 
         if self.want_to == '':
             self.error['want_to'] = 'Whom you want to is requird'                
-        
-        if self.face_id == '':
-            self.error['face_id'] = 'Face is required'        
+           
 
         return self.error
 

@@ -19,16 +19,18 @@ class EmployeeForm():
             self.designation = form_data.get('designation')
             self.department_id = form_data.get('department_id')
             self.image_dir = form_data.get('image_dir')
-            self.face_id = form_data.get('face_id')
             self.status = form_data.get('designation')
             
     def validate(self, edit= False):
                 
-        if self.first_name == '':
-            self.error['first_name'] = 'First Name is requird'
-                
         if self.employee_id == '':
             self.error['employee_id'] = 'Employee ID is requird'
+
+        elif self.uniqueEmployeeID(self.employee_id) and edit == False:
+            self.error['employee_id'] = 'The Employee ID is already exist'
+                
+        if self.first_name == '':
+            self.error['first_name'] = 'First Name is requird'
         
         elif self.nameValidation(self.first_name):
             self.error['first_name'] = 'Only alphabets are required'
@@ -71,9 +73,6 @@ class EmployeeForm():
         
         if self.image_dir == '' and edit == False:
             self.error['image_dir'] = 'Employee Images is required'   
-        
-        if self.face_id == '':
-            self.error['face_id'] = 'Face is required'        
 
         return self.error
 
@@ -108,6 +107,15 @@ class EmployeeForm():
     def uniqueUserEmail(self, value):
 
         check_user = models.Employees.objects.filter(email=value).values()        
+
+        if check_user.exists():
+            return True
+        
+        return False    
+
+    def uniqueEmployeeID(self, value):
+
+        check_user = models.Employees.objects.filter(employee_id=value).values()        
 
         if check_user.exists():
             return True

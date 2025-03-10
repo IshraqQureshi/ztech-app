@@ -7,11 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-import time
 import cv2
 import numpy as np
 import os
-from PIL import Image
 
 def index(request):
     if request.session.get('user') is None:
@@ -125,7 +123,6 @@ def save(request, visitor_id= None, visitor_image= None):
     save_visitor.address = request.POST.get('address')
     save_visitor.purpose = request.POST.get('purpose')
     save_visitor.want_to = request.POST.get('want_to')
-    save_visitor.face_id = request.POST.get('face_id')    
 
     # print(request.POST)
     save_visitor.save()            
@@ -140,97 +137,7 @@ def delete(request, visitor_id):
 
 @csrf_exempt
 def ajax_face(request):
-    face_id = int(request.POST['face_id'])
-
-    if face_id == 0:
-        if models.Visitors.objects.exists():
-            visitor_count = models.Visitors.objects.latest('id')
-            user_id = visitor_count.id + 1
-        else:
-            user_id = 1
-    else:
-        user_id = face_id
-
-    face_cascade = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_visitors.xml')
-
-    cam = cv2.VideoCapture(0)
-
-    if not cam.isOpened():
-        return JsonResponse({'status': False, 'error': 'Camera not accessible'})
-
-    sample_num = 0
-    dataset_path = os.path.join(settings.BASE_DIR, 'ml', 'frontend-dataset')
-
-    os.makedirs(dataset_path, exist_ok=True)
-
-    while True:
-        ret, frame = cam.read()
-        if not ret:
-            print("Failed to capture image")
-            continue
-
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
-
-        for (x, y, w, h) in faces:
-            face = gray[y:y+h, x:x+w]
-            face_resized = cv2.resize(face, (150, 150)) 
-
-            file_name = f"visitor.{user_id}.{sample_num}.jpg"
-            cv2.imwrite(os.path.join(dataset_path, file_name), face_resized)
-            sample_num += 1
-
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.waitKey(250)
-
-        cv2.imshow("Capturing Faces", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q') or sample_num >= 35:
-            break
-
-    cam.release()
-    cv2.destroyAllWindows()
-
-    response = {'status': True, 'face_id': user_id}
-    return JsonResponse(response)
+    return JsonResponse({'status': True})
 
 def train_ml(request):
-    recognizer = cv2.face.LBPHFaceRecognizer_create()
-
-    dataset_path = settings.BASE_DIR + '/ml/frontend-dataset'
-
-    def getImagesWithID(path):
-        import glob
-
-        imagePaths = [os.path.join(path,f) for f in os.listdir(path)] 
-        faces = []
-        Ids = []
-
-        for imagePath in imagePaths:
-
-            try:
-                faceImg = Image.open(imagePath).convert('L')
-                faceImg = faceImg.resize((150, 150))
-                faceNp = np.array(faceImg, 'uint8')
-
-                ID = int(os.path.split(imagePath)[-1].split('.')[1])
-
-                faces.append(faceNp)
-                Ids.append(ID)
-            except Exception as e:
-                print(f"Error processing file {imagePath}: {e}")
-
-            cv2.imshow("training", faceNp)
-            cv2.waitKey(10)
-        return np.array(Ids), faces
-
-    ids, faces = getImagesWithID(dataset_path)
-
-    if len(ids) == 0 or len(faces) == 0:
-        return JsonResponse({'status': False, 'error': 'No valid training data found'})
-
-    recognizer.train(faces, ids)
-
-    recognizer.save(settings.BASE_DIR + '/ml/frontend-recognizer/trainingData.yml')
-
-    cv2.destroyAllWindows()
     return redirect('/')

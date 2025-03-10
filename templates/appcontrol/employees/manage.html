@@ -40,7 +40,7 @@
                       <td>{{ employee.email }}</td>
                       <td>{{ employee.designation }}</td>
                       <td>                      
-                          {% if employee.embedding.strip == "" %} 
+                          {% if not employee.embedding %} 
                             <button class="btn btn-sm btn-success" id="face_btn" data-user_id="{{ employee.id }}">Register Face</button>
                           {% else %}
                             <button class="btn btn-sm btn-warning" id="embeddingBtn" data-embedding="{{employee.embedding}}" data-toggle="modal" data-target="#embeddingModal">Embeddings</button>

@@ -11,5 +11,5 @@ class Employees(models.Model):
     designation = models.CharField('designation', max_length=199)
     department_id = models.IntegerField('department_id')
     image_dir = models.CharField('image_dir', max_length=256)
-    face_id = models.IntegerField('face_id', default=0)
+    embedding = models.BinaryField('embedding')
     status = models.BooleanField('status')

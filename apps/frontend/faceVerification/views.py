@@ -11,7 +11,11 @@ from apps.appcontrol.employees.models import Employees
 from apps.appcontrol.visitors.models import Visitors
 from apps.appcontrol.attendance.models import Attendace
 from datetime import datetime, date, timedelta
+import os
 import cv2
+import numpy as np
+from keras_facenet import FaceNet
+import joblib
 
 def index(request):
     data = {
@@ -26,24 +30,28 @@ def index(request):
 
 @csrf_exempt
 def face(request):
-    import cv2
-    import numpy as np
+    embedder = FaceNet()
+    model_path = os.path.join(settings.BASE_DIR, 'ml/employee_recognition_model.pkl')
 
-    faceDetect = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_default.xml')
+    if not os.path.exists(model_path):
+        return JsonResponse({'status': False, 'error': 'Model not trained yet'})
+
+    knn = joblib.load(model_path)
+
+    if knn.n_samples_fit_ < knn.n_neighbors:
+        return JsonResponse({'status': False, 'error': 'Model has too few samples to make a prediction'})
+
+    faceDetect = cv2.CascadeClassifier(os.path.join(settings.BASE_DIR, 'ml/haarcascade_frontalface_employee.xml'))
     cam = cv2.VideoCapture(0)
 
     if not cam.isOpened():
         return JsonResponse({'status': False, 'error': 'Camera not accessible'})
-
-    recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read(settings.BASE_DIR + '/ml/recognizer/trainingData.yml')
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
     while True:
         ret, img = cam.read()
         if not ret:
-            print("Failed to capture image")
             continue
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -51,32 +59,39 @@ def face(request):
 
         employee = None
         for (x, y, w, h) in faces:
+            face_region = img[y:y + h, x:x + w]
+            face_resized = cv2.resize(face_region, (160, 160))
+
+            embedding = embedder.embeddings(np.expand_dims(face_resized, axis=0))[0]
+
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-            face_region = gray[y:y + h, x:x + w]
-            face_resized = cv2.resize(face_region, (150, 150))
+            distances = knn.kneighbors([embedding], n_neighbors=1)
+            predicted_id = knn.predict([embedding])[0]
 
-            predicted_id, conf = recognizer.predict(face_resized)
+            if distances[0][0] <= 0.7:
+                employee = Employees.objects.get(id=predicted_id)
 
-            if conf < 50:
-                employee = Employees.objects.get(face_id=predicted_id)
                 cv2.putText(img, f"{employee.first_name} {employee.last_name}", (x, y - 25), font, 0.5, (0, 255, 0), 2)
                 cv2.putText(img, f"{employee.employee_id}", (x, y - 10), font, 0.5, (0, 255, 0), 2)
             else:
                 cv2.putText(img, "Unknown", (x, y - 10), font, 0.8, (0, 0, 255), 2)
 
-        cv2.imshow("Face", img)
+        cv2.imshow("Real-Time Face Recognition", img)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        elif employee is not None:
-            cam.release()
-            cv2.destroyAllWindows()
-            return JsonResponse({'status': True, 'employee': model_to_dict(employee), 'punch_time': datetime.now().strftime('%H:%M:%S'), 'date': datetime.now().strftime('%Y-%m-%d')})
+        # elif employee is not None:
+        #     cam.release()
+        #     cv2.destroyAllWindows()
+        #     return JsonResponse({'status': True, 'employee': model_to_dict(employee), 'punch_time': datetime.now().strftime('%H:%M:%S'), 'date': datetime.now().strftime('%Y-%m-%d')})
 
     cam.release()
     cv2.destroyAllWindows()
-    return JsonResponse({'status': False})
+    
+    return JsonResponse({'status': False, 'message': 'No face detected'})
+
+
 
 @csrf_exempt
 def capture(request):

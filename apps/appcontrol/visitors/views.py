@@ -151,7 +151,7 @@ def ajax_face(request):
     else:
         user_id = face_id
 
-    face_cascade = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_visitors.xml')
 
     cam = cv2.VideoCapture(0)
 

@@ -2,12 +2,12 @@ $(document).ready(function(){
 
     $('#face_btn').click(function(e){
         e.preventDefault();
-        let face_id = $('[name=face_id]').val()
-        if(face_id == '')
+        let user_id = $(this).data('user_id')
+        if(user_id == '')
         {
-            face_id = 0;
+            user_id = 0;
         }
-        register_face(face_id)
+        register_face(user_id)
     });
 
 });
@@ -27,10 +27,10 @@ $(document).ready(function(){
 });
 
 
-function register_face(face_id=false){
+function register_face(user_id=false){
     
     let data = {};
-    data.face_id = face_id;
+    data.user_id = user_id;
     
     $.ajax({
         url: '/appcontrol/employees/ajax_register_face/',
@@ -38,9 +38,11 @@ function register_face(face_id=false){
         data: data,
         success: function(response){
             
-            if ( response != '' )
+            if ( response.status && confirm('Face registered successfully. Click OK to reload the page.') )
             {
-                $('input[name=face_id]').val(response.face_id)
+                window.location.reload();
+            }else {
+                alert(response.message);
             }
             
         }

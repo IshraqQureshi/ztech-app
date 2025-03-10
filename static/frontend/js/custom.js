@@ -70,8 +70,8 @@ $(document).ready(function(){
     $('.face_btn').click(function(e){
         e.preventDefault();        
 
-        if ( face_verify < 5 )
-        {            
+        // if ( face_verify < 5 )
+        // {            
             $.ajax({
                 url: '/frontend/face_recognition/',
                 type: 'GET',        
@@ -117,10 +117,10 @@ $(document).ready(function(){
                     }
                 }
             });
-        }
-        else{
-            alert('Out Of Verifications')
-        }
+        // }
+        // else{
+        //     alert('Out Of Verifications')
+        // }
     })
 
     $('.capture_btn').click(function(e){

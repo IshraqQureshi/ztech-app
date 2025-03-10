@@ -117,11 +117,10 @@ ADMIN_EMAIL = 'info@ztech.com'
 
 # SMTP DETAILS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_USE_TLS = False
-EMAIL_PORT = 25
-EMAIL_HOST_USER = '6a9938dce2ec0a'
-EMAIL_HOST_PASSWORD = 'ba0ab894eea17b'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '4da5812f39f82f'
+EMAIL_HOST_PASSWORD = '3263029c8fb0e3'
+EMAIL_PORT = '2525'
 
 
 STATIC_URL = '/static/'

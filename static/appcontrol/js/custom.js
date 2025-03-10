@@ -15,5 +15,9 @@ $(document).ready(function() {
             $("input[name^='file_']").val(fileName);
         })
     }
-});
 
+    $('#embeddingBtn').click(function(e){
+        e.preventDefault();
+        $('#embeddingModal .modal-body').html($(this).data('embedding'));
+    });
+});

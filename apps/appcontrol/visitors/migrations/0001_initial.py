@@ -22,8 +22,8 @@ class Migration(migrations.Migration):
                 ('phone_number', models.CharField(max_length=199, verbose_name='phone_number')),
                 ('address', models.CharField(max_length=199, verbose_name='address')),
                 ('purpose', models.CharField(max_length=199, verbose_name='purpose')),
-                ('want_to', models.CharField(max_length=199, verbose_name='want_to')),
-                ('face_id', models.IntegerField(verbose_name='face_id')),
+                ('want_to', models.IntegerField(verbose_name='want_to')),
+                ('embedding', models.BinaryField(verbose_name='embedding')),
             ],
         ),
     ]

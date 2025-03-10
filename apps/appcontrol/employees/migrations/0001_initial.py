@@ -26,6 +26,7 @@ class Migration(migrations.Migration):
                 ('department_id', models.IntegerField(verbose_name='department_id')),
                 ('image_dir', models.CharField(max_length=256, verbose_name='image_dir')),
                 ('status', models.BooleanField(verbose_name='status')),
+                ('embedding', models.BinaryField(verbose_name='embedding')),
             ],
         ),
     ]

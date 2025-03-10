@@ -7,12 +7,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-import time
 from django.core.files.storage import FileSystemStorage
 import cv2
 import numpy as np
-import os
-from PIL import Image
+from sklearn.neighbors import KNeighborsClassifier
+from keras_facenet import FaceNet
+import joblib
 
 def index(request):
     if request.session.get('user') is None:
@@ -134,7 +134,6 @@ def save(request, id= None, employee_image= None):
     save_employee.address = request.POST.get('address')
     save_employee.designation = request.POST.get('designation')
     save_employee.department_id = request.POST.get('department_id')
-    save_employee.face_id = request.POST.get('face_id')
     save_employee.status = request.POST.get('status')    
 
     if employee_image is not None:
@@ -151,100 +150,91 @@ def delete(request, employee_id):
 
     return redirect('/appcontrol/employees/manage')
 
+
 @csrf_exempt
 def ajax_face(request):
-    face_id = int(request.POST['face_id'])
+    user_id = int(request.POST['user_id'])
 
-    if face_id == 0:
-        if models.Employees.objects.exists():
-            employee_count = models.Employees.objects.latest('id')
-            user_id = employee_count.id + 1
-        else:
-            user_id = 1
-    else:
-        user_id = face_id
+    try:
+        user = models.Employees.objects.get(id=user_id)
+    except models.Employees.DoesNotExist:
+        return JsonResponse({'status': False, 'error': 'User not found'})
 
-    face_cascade = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_default.xml')
-
+    face_cascade = cv2.CascadeClassifier(settings.BASE_DIR + '/ml/haarcascade_frontalface_employee.xml')
     cam = cv2.VideoCapture(0)
 
     if not cam.isOpened():
         return JsonResponse({'status': False, 'error': 'Camera not accessible'})
 
-    sample_num = 0
-    dataset_path = os.path.join(settings.BASE_DIR, 'ml', 'dataset')
+    embedder = FaceNet()
+    detected_embedding = None
 
-    os.makedirs(dataset_path, exist_ok=True)
+    frame_count = 0
 
     while True:
         ret, frame = cam.read()
         if not ret:
-            print("Failed to capture image")
             continue
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # gray = cv2.equalizeHist(gray)  
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
-        for (x, y, w, h) in faces:
-            face = gray[y:y+h, x:x+w]
-            face_resized = cv2.resize(face, (150, 150)) 
-
-            file_name = f"user.{user_id}.{sample_num}.jpg"
-            cv2.imwrite(os.path.join(dataset_path, file_name), face_resized)
-            sample_num += 1
+        if len(faces) > 0:
+            x, y, w, h = faces[0]
+            face = frame[y:y+h, x:x+w]
+            face_resized = cv2.resize(face, (160, 160))
 
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.waitKey(250)
+            cv2.putText(frame, "Registering Face...", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        cv2.imshow("Capturing Faces", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q') or sample_num >= 35:
+            cv2.imshow("Registering Face - Look at the camera", frame)
+
+            frame_count += 1
+
+            if frame_count >= 30:
+                detected_embedding = embedder.embeddings(np.expand_dims(face_resized, axis=0))[0]
+                break
+
+        if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
     cam.release()
     cv2.destroyAllWindows()
 
-    response = {'status': True, 'face_id': user_id}
-    return JsonResponse(response)
+    if detected_embedding is not None:
+        user.embedding = detected_embedding.tobytes()
+        user.save()
+
+        return JsonResponse({'status': True, 'message': 'Face registered successfully'})
+
+    return JsonResponse({'status': False, 'message': 'No face detected'})
 
 
+
+
+@csrf_exempt
 def train_ml(request):
-    recognizer = cv2.face.LBPHFaceRecognizer_create()
+    employees = models.Employees.objects.exclude(embedding=None).values('id', 'embedding')
 
-    dataset_path = settings.BASE_DIR + '/ml/dataset'
+    if employees.count() < 1:
+        return JsonResponse({'status': False, 'error': 'Not enough face embeddings for training'})
 
-    def getImagesWithID(path):
-        import glob
+    X = []
+    y = []
 
-        imagePaths = [os.path.join(path,f) for f in os.listdir(path)] 
-        faces = []
-        Ids = []
+    for employee in employees:
+        embedding = np.frombuffer(employee['embedding'], dtype=np.float32)
+        X.append(embedding)
+        y.append(employee['id'])
 
-        for imagePath in imagePaths:
-            try:
-                faceImg = Image.open(imagePath).convert('L')
-                faceImg = faceImg.resize((150, 150))
-                faceNp = np.array(faceImg, 'uint8')
+    X = np.array(X)
+    y = np.array(y)
 
-                ID = int(os.path.split(imagePath)[-1].split('.')[1])
+    n_neighbors = min(1, len(y))
+    knn = KNeighborsClassifier(n_neighbors=n_neighbors, metric='euclidean')
+    knn.fit(X, y)
 
-                faces.append(faceNp)
-                Ids.append(ID)
-            except Exception as e:
-                print(f"Error processing file {imagePath}: {e}")
+    model_path = settings.BASE_DIR + '/ml/employee_recognition_model.pkl'
+    joblib.dump(knn, model_path)
 
-            cv2.imshow("training", faceNp)
-            cv2.waitKey(10)
-        return np.array(Ids), faces
-
-    ids, faces = getImagesWithID(dataset_path)
-
-    if len(ids) == 0 or len(faces) == 0:
-        return JsonResponse({'status': False, 'error': 'No valid training data found'})
-
-    recognizer.train(faces, ids)
-
-    recognizer.save(settings.BASE_DIR + '/ml/recognizer/trainingData.yml')
-
-    cv2.destroyAllWindows()
-    return redirect('/')
+    return JsonResponse({'status': True, 'message': 'Model trained successfully with {} samples'.format(len(y))})

@@ -9,5 +9,5 @@ class Visitors(models.Model):
     address = models.CharField('address', max_length=199)
     purpose = models.CharField('purpose', max_length=199)
     want_to = models.IntegerField('want_to')
-    face_id = models.IntegerField('face_id', default=0)
+    embedding = models.BinaryField('embedding')
     

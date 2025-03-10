@@ -12,7 +12,6 @@ import cv2
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from keras_facenet import FaceNet
-from mtcnn import MTCNN
 import joblib
 
 def index(request):
@@ -163,14 +162,15 @@ def ajax_face(request):
     except models.Employees.DoesNotExist:
         return JsonResponse({'status': False, 'error': 'User not found'})
 
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     cam = cv2.VideoCapture(0)
 
     if not cam.isOpened():
         return JsonResponse({'status': False, 'error': 'Camera not accessible'})
 
     embedder = FaceNet()
-    mtcnn = MTCNN()
     detected_embedding = None
+
     frame_count = 0
 
     while True:
@@ -178,38 +178,36 @@ def ajax_face(request):
         if not ret:
             continue
 
-        rgb_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        detections = mtcnn.detect_faces(rgb_img)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
-        if detections:
-            for detection in detections:
-                x, y, w, h = detection['box']
+        if len(faces) > 0:
+            x, y, w, h = faces[0]
+            face = frame[y:y+h, x:x+w]
+            face_resized = cv2.resize(face, (160, 160))
 
-                face_region = frame[y:y+h, x:x+w]
-                face_resized = cv2.resize(face_region, (160, 160))
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            cv2.putText(frame, "Registering Face...", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.putText(frame, "Registering Face...", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.imshow("Registering Face - Look at the camera", frame)
 
-                cv2.imshow("Registering Face - Look at the camera", frame)
+            frame_count += 1
 
-                frame_count += 1
-
-                if frame_count >= 15:
-                    detected_embedding = embedder.embeddings(np.expand_dims(face_resized, axis=0))[0]
-
-                    cam.release()
-                    cv2.destroyAllWindows()
-
-                    user.embedding = detected_embedding.tobytes()
-                    user.save()
-                    return JsonResponse({'status': True, 'message': 'Face registered successfully'})
+            if frame_count >= 30:
+                detected_embedding = embedder.embeddings(np.expand_dims(face_resized, axis=0))[0]
+                break
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
     cam.release()
     cv2.destroyAllWindows()
+
+    if detected_embedding is not None:
+        user.embedding = detected_embedding.tobytes()
+        user.save()
+
+        return JsonResponse({'status': True, 'message': 'Face registered successfully'})
 
     return JsonResponse({'status': False, 'message': 'No face detected'})
 

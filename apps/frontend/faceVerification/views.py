@@ -9,7 +9,6 @@ import os
 import cv2
 import numpy as np
 from keras_facenet import FaceNet
-from mtcnn import MTCNN
 import joblib
 
 def index(request):
@@ -25,6 +24,7 @@ def index(request):
 
 @csrf_exempt
 def face(request):
+    embedder = FaceNet()
     model_path = os.path.join(settings.BASE_DIR, 'ml/employee_recognition_model.pkl')
 
     if not os.path.exists(model_path):
@@ -35,10 +35,7 @@ def face(request):
     if knn.n_samples_fit_ < knn.n_neighbors:
         return JsonResponse({'status': False, 'error': 'Model has too few samples to make a prediction'})
 
-    embedder = FaceNet()
-
-    mtcnn = MTCNN()
-
+    faceDetect = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     cam = cv2.VideoCapture(0)
 
     if not cam.isOpened():
@@ -51,36 +48,28 @@ def face(request):
         if not ret:
             continue
 
-        rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = faceDetect.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
-        detections = mtcnn.detect_faces(rgb_img)
+        employee = None
+        for (x, y, w, h) in faces:
+            face_region = img[y:y + h, x:x + w]
+            face_resized = cv2.resize(face_region, (160, 160))
 
-        if detections:
-            for detection in detections:
-                x, y, w, h = detection['box']
+            embedding = embedder.embeddings(np.expand_dims(face_resized, axis=0))[0]
 
-                face_region = img[y:y+h, x:x+w]
-                face_resized = cv2.resize(face_region, (160, 160))
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-                embedding = embedder.embeddings(np.expand_dims(face_resized, axis=0))[0]
+            distances = knn.kneighbors([embedding], n_neighbors=1)
+            predicted_id = knn.predict([embedding])[0]
 
-                distances = knn.kneighbors([embedding], n_neighbors=1)
-                predicted_id = knn.predict([embedding])[0]
+            if distances[0][0] <= 0.7:
+                employee = Employees.objects.get(id=predicted_id)
 
-                THRESHOLD = 0.7
-
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-                if distances[0][0] <= THRESHOLD:
-                    try:
-                        employee = Employees.objects.get(id=predicted_id)
-
-                        cv2.putText(img, f"{employee.first_name} {employee.last_name}", (x, y - 25), font, 0.5, (0, 255, 0), 2)
-                        cv2.putText(img, f"{employee.employee_id}", (x, y - 10), font, 0.5, (0, 255, 0), 2)
-                    except Employees.DoesNotExist:
-                        cv2.putText(img, "Unknown", (x, y - 10), font, 0.8, (0, 0, 255), 2)
-                else:
-                    cv2.putText(img, "Unknown", (x, y - 10), font, 0.8, (0, 0, 255), 2)
+                cv2.putText(img, f"{employee.first_name} {employee.last_name}", (x, y - 25), font, 0.5, (0, 255, 0), 2)
+                cv2.putText(img, f"{employee.employee_id}", (x, y - 10), font, 0.5, (0, 255, 0), 2)
+            else:
+                cv2.putText(img, "Unknown", (x, y - 10), font, 0.8, (0, 0, 255), 2)
 
         cv2.imshow("Real-Time Face Recognition", img)
 
@@ -91,10 +80,9 @@ def face(request):
         #     cv2.destroyAllWindows()
         #     return JsonResponse({'status': True, 'employee': model_to_dict(employee), 'punch_time': datetime.now().strftime('%H:%M:%S'), 'date': datetime.now().strftime('%Y-%m-%d')})
 
-
     cam.release()
     cv2.destroyAllWindows()
-
+    
     return JsonResponse({'status': False, 'message': 'No face detected'})
 
 
